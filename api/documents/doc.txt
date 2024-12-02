@@ -1,0 +1,19 @@
+Hola! 
+Creamos este índice a fin de explicar la lógica y documentación realizada para este proyecto.
+
+- 1_LogicaNewAppointment
+
+Inicialmente documentamos el circuito que queremos que haga el usuario al pedir un turno y como deberíamos deberiamos desarrollarlo.
+    Lo dividimos en:
+        -MongoDB Atlas: En las colecciones buscamos que propiedades impactan según los pedidos realizados.
+        -Back: Las rutas / "middlewares" que deberíamos modificar o desarrollar.
+        -Front: Lo que hace el usuario para que se activen las llamadas al back.
+
+- 2_LogicaNewAppointment
+
+Dentro de la carpeta --> routes --> appointment.js --> Ruta (1).
+Esta ruta es de los pilares de la aplicación. Lo documentamos tanto escrito en la ruta del código con su respectivo número tal como está en el pdf, para entender con mayor claridad la lógica de negocio y las decisiones tomadas.
+
+- 3__LogicaConfirmarTurno
+
+En la lógica de negocio determinamos que si una persona quiere tomar un turno entra en la etapa de 'reserva'. Dicho turno queda en stand-by y la información entra como 'confirmado' a la base hasta que lo confirme o se le termina el tiempo, si no se destruye. 
