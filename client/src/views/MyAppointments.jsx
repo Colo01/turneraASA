@@ -179,6 +179,7 @@ const MyAppointments = () => {
     Cancelado: "Cancelado",
     Asistido: "Asistido",
     Confirmado: "Confirmado",
+    Ausente: "Ausente"
   };
   const columns = [
     {

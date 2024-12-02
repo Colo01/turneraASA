@@ -1,6 +1,5 @@
 const { Router } = require("express");
 const router = Router();
-const cron = require("node-cron");
 const User = require("../models/User");
 const Appointment = require("../models/Appointment");
 const BranchOffice = require("../models/BranchOffice");
@@ -15,25 +14,20 @@ const {
   htmlTemplateReminder,
 } = require("../config/html");
 
-
 /* Rutas
-(1) Usuario - Crear turno / modifica un turno existente cancelandolo. (Cambia estado de available false a true y state de reservado a cancelado)
+(1) Usuario - Crear turno.
 (2) Usuario - Cancelar un turno.
-(3) Usuario - Mostrar todos sus turnos tomados con todos sus estados.
+(3) Usuario - Mostrar todos sus turnos.
 (4) Operador - Confirmar un turno.
-(5) Operador - Muestra todos los turnos para un día, horario y sucursal seleccionada.
-(6) Mostrar todos los turnos con el formato de arreglo de objetos sin ningún tipo de validación. (Comentada porque no se utiliza)
-(7) Usuario - Cambia el estado del turno a confirmado desde la selección del turno para activar el contador.
-(8) Usuario - Destruye la existencia del turno ya que solo entra a un estado de elección de turno una vez que finaliza el tiempo del contador o el usuario cancela el turno en ese tiempo.
+(5) Operador - Muestra turnos para un día, horario y sucursal.
+(6) Administrador - Cambiar el estado a asistido.
+(7) Administrador - Cambiar el estado a ausente.
 */
 
-// (1) Usuario - Crear turno / modifica un turno existente cancelandolo. (Cambia estado de available false a true y state de reservado a cancelado). Logica de negocio hecha en Lucidchart.
-//A - Crear un nuevo turno
+// (1) Crear un nuevo turno
 router.post("/:id", async (req, res) => {
   const userId = req.params.id;
-  const { date, month, year, day, time } = req.body;
-  const branchOfficeId = req.body.branchId;
-  const appointmentId = req.body.appointId;
+  const { date, month, year, day, time, branchId, appointId } = req.body;
 
   const newAppointment = new Appointment({
     date,
@@ -41,45 +35,19 @@ router.post("/:id", async (req, res) => {
     year,
     day,
     time,
-    branchOffice: branchOfficeId,
+    branchOffice: branchId,
     user: userId,
   });
-  // Busco turno para ese mismo dia, horario, sucursal
-  //ej Hoy 15:00 en RG1
 
   try {
-    const branchOffice = await BranchOffice.findOne({
-      _id: parseId(branchOfficeId),
-    });
+    const branchOffice = await BranchOffice.findById(branchId);
 
-    const appointment = await Appointment.find({
+    const existingAppointments = await Appointment.find({
       date,
       month,
       year,
-      day,
       time,
-      branchOffice: branchOfficeId,
-    });
-
-    //APPOINTMENTFALSE = Turno tomado
-    const appointmentFALSE = await Appointment.find({
-      date,
-      month,
-      year,
-      day,
-      time,
-      branchOffice: branchOfficeId,
-      available: false,
-    });
-
-    const appointmentTRUE = await Appointment.find({
-      date,
-      month,
-      year,
-      day,
-      time,
-      branchOffice: branchOfficeId,
-      available: true,
+      branchOffice: branchId,
     });
 
     const appointmentSameUser = await Appointment.find({
@@ -90,251 +58,174 @@ router.post("/:id", async (req, res) => {
       user: userId,
     });
 
-    // (A.1) Existe en Base Appoiment un turno para ese mismo dia, horario, sucursal
-
-    if (appointment.length === 0) {
-      // (A.1) No Existe. Ahora Consulto si el Usuario ya tiene turno para ese dia
-      // (A.1.1) Si tiene le rechazo la peticion
+    if (existingAppointments.length === 0) {
       if (appointmentSameUser.length > 0) {
         return res
-          .status(200)
-          .json({ error: "Usted ya tiene un turno activo para este dia" });
-        // (A.1.2) Si no tiene, le acepto el turno
+          .status(400)
+          .json({ error: "Ya tiene un turno activo para este día." });
       } else {
-        const saveAppointment = await newAppointment.save();
-        const saveAppointmentId = saveAppointment._id;
-        NewAppointment(branchOfficeId, userId, saveAppointmentId);
-        // (B) Ademas, si esto sucede desde modificar, el turno anterior que figura en el req.body lo cancelo
-        if (appointmentId) {
-          Cancelar(appointmentId);
-        }
-        return res.status(200).json(saveAppointment);
-      }
-    }
+        const savedAppointment = await newAppointment.save();
+        NewAppointment(branchId, userId, savedAppointment._id);
 
-    // (A.2) Si existe.
-    // Ahora Consulto si el Usuario ya tiene turno para ese dia
-    // (A.2.1)Si tiene, le rechazo la peticion
-    if (appointmentSameUser.length > 0) {
-      return res
-        .status(200)
-        .json({ error: "Usted ya tiene un turno activo para este dia" });
-    }
-
-    // (A.2.2) No tiene, avanzo con el siguiente filtro
-    // Permite Base brandOffice otro turno en simultaneo
-    if (appointment) {
-      if (branchOffice.simultAppointment === 1) {
-        // (A.2.2.1) No, no permite
-        return res.json({
-          error:
-            "Turno no disponible dado que no se permiten turnos simultaneos",
-        });
-      }
-      // (A.2.2.2) Si permite
-      else {
-        if (appointmentFALSE.length < branchOffice.simultAppointment) {
-          // (A.2.2.2.1) no lo supera, tomo turno
-          const saveAppointment = await newAppointment.save();
-          const saveAppointmentId = saveAppointment._id;
-          NewAppointment(branchOfficeId, userId, saveAppointmentId);
-          // (B) Ademas, si esto sucede desde modificar, el turno anterior que figura en el req.body lo cancelo
-          if (appointmentId) {
-            Cancelar(appointmentId);
-          }
-          return res.status(200).json(saveAppointment);
-        } else {
-          // (A.2.2.2.2) Si lo supera,no tomo turno
-          return res.json({
-            error:
-              "Turno no disponible, ya se han otorgado todos los disponibles",
-          });
+        if (appointId) {
+          Cancelar(appointId);
         }
+
+        return res.status(200).json(savedAppointment);
       }
+    } else {
+      return res.status(400).json({
+        error: "Turno no disponible para la sucursal y horario seleccionado.",
+      });
     }
   } catch (error) {
-    return res.status(405).json(error);
+    console.error("Error al crear el turno:", error);
+    return res.status(500).json({ error: "Error interno del servidor." });
   }
 });
 
-// (2) Usuario - Cancelar un turno.
+// (2) Cancelar un turno
 router.put("/:userId/myAppointment/remove", async (req, res) => {
   const { userId } = req.params;
-  const appointmentId = req.body.id;
+  const { id } = req.body;
 
   try {
-    await Appointment.findOneAndUpdate({ _id: parseId(appointmentId) }, [
-      { $set: { available: { $eq: [false, "$available"] } } },
-    ]);
-    const appointmentCanceled = await Appointment.findOneAndUpdate(
-      { _id: parseId(appointmentId) },
-      [{ $set: { state: "cancelado" } }]
+    const appointment = await Appointment.findOneAndUpdate(
+      { _id: parseId(id) },
+      { state: "cancelado", available: true }
     );
-    const branchOffice = await BranchOffice.findOne({
-      _id: appointmentCanceled.branchOffice,
-    });
-    const userData = await User.find({ _id: parseId(userId) });
+
+    const branchOffice = await BranchOffice.findById(appointment.branchOffice);
+    const userData = await User.findById(userId);
+
     const info = {
-      from: `info@miturno.com`, //correo desde el cual se envía el mensaje ej: info@miturno.com
-      to: `${userData[0].email}`, //correo del usuario al cual se le enviará el mensaje. Correo con link para restablecer contraseña
-      subject: `miTurno del ${appointmentCanceled.date}/${appointmentCanceled.month}/${appointmentCanceled.year} a las ${appointmentCanceled.time}hs en sucursal ${branchOffice.location}`, //Asunto del mensaje
-      text: "Muchas gracias por utilizar nuestro servicio",
+      from: "info@miturno.com",
+      to: userData.email,
+      subject: `Turno cancelado en ${branchOffice.location}`,
+      text: "Su turno ha sido cancelado.",
       html: htmlTemplateCanceled,
     };
+
     transport.sendMail(info);
-    res.status(200).json("Turno cancelado");
+    res.status(200).json({ message: "Turno cancelado exitosamente." });
   } catch (err) {
-    res.status(404).json(err);
+    console.error("Error al cancelar el turno:", err);
+    res.status(500).json({ error: "Error al cancelar el turno." });
   }
 });
 
-// (3) Usuario - Mostrar todos sus turnos tomados con todos sus estados.
+// (3) Mostrar turnos de un usuario
 router.get("/:id/showAppointments", async (req, res) => {
   const { id } = req.params;
+
   try {
-    await Appointment.find({ user: id }, (err, result) => {
-      if (err) {
-        return res.json({ err: "Error" });
-      } else {
-        return res.json({ data: result });
-      }
-    })
-      .clone()
-      .exec();
+    const appointments = await Appointment.find({ user: id }).populate(
+      "branchOffice",
+      "location address"
+    );
+    res.status(200).json({ data: appointments });
   } catch (err) {
-    res.status(404).json(err);
+    console.error("Error al obtener los turnos:", err);
+    res.status(500).json({ error: "Error al obtener los turnos." });
   }
 });
 
-// (4) Operador - Confirmar un turno.
-router.put("/:operatorId/showAppointments", async (req, res) => {
-  const { operatorId } = req.params;
-  const appointmentId = req.body.id;
-  try {
-    const userOperator = await User.findOne({ _id: parseId(operatorId) });
-    if (userOperator.operator === true) {
-      await Appointment.findOneAndUpdate({ _id: parseId(appointmentId) }, [
-        { $set: { state: "asistido" } },
-      ]);
-      res.status(200).json("Turno asistido/confirmado");
-    } else {
-      res
-        .send("You don't have permission to create a new branch office")
-        .status(404);
-    }
-  } catch (err) {
-    res.status(404).json(err);
-  }
-});
-
-// (5) Operador - Muestra todos los turnos para un día, horario y sucursal seleccionada.
-// A desarrollar: Datos del usuario y turnos que esten en available: false
-router.get("/:operatorId/dayAppointments", async (req, res) => {
-  const { operatorId } = req.params;
-  const { date, month, year, time } = req.body;
-  const branchOfficeId = req.body.id;
-
-try {
-    const userOperator = await User.findOne({ _id: parseId(operatorId) });
-    if (userOperator.operator === true) {
-      await Appointment.find(
-        { date, month, year, time, branchOffice: branchOfficeId },
-        (err, result) => {
-          if (err) {
-            res.json({ err: "Error" });
-          } else {
-            res.json({ data: result });
-          }
-        }
-      )
-        .clone()
-        .exec();
-    } else {
-      res
-        .send("You don't have permission to create a new branch office")
-        .status(404);
-    }
-  } catch (error) {
-    res.status(404).json(error);
-  }
-});
-
-// (6) Mostrar todos los turnos con el formato de arreglo de objetos sin ningún tipo de validación. (Comentada porque no se utilizaría)
-// router.get("/", (req, res) => {
-//   Appointment.find({}, (err, result) => {
-//     if (err) {
-//       res.json({ err: "Error" });
-//     } else {
-//       res.json({ data: result });
-//     }
-//   });
-// });
-
-// (7) Usuario - Cambia el estado del turno a confirmado desde la selección del turno para activar el contador.
+// (4) Confirmar un turno
 router.put("/:userId/myAppointment/confirmed", async (req, res) => {
   const { userId } = req.params;
-  const appointmentId = req.body.id;
-  const userData = await User.find({ _id: parseId(userId) });
+  const { id } = req.body;
+
   try {
-    const appointmentConfirm = await Appointment.findOneAndUpdate(
-      { _id: parseId(appointmentId) },
-      [{ $set: { state: "confirmado" } }]
-    )
-    console.log("TURNO CONFIRMADO", appointmentConfirm);
-    console.log("USUARIO", userData);
-    const branchOfficeId = appointmentConfirm.branchOffice[0];
-    const branchOffice = await BranchOffice.findOne({_id: parseId(branchOfficeId)});
-    console.log("BRANCH", branchOfficeId);
-    const info = {
-      from: `info@miturno.com`, //correo desde el cual se envía el mensaje ej: info@miturno.com
-      to: `${userData[0].email}`, //correo del usuario al cual se le enviará el mensaje. Correo con link para restablecer contraseña
-      subject: `miTurno del ${appointmentConfirm.date}/${appointmentConfirm.month}/${appointmentConfirm.year} a las ${appointmentConfirm.time}hs en sucursal ${branchOffice.location}`, //Asunto del mensaje
-      text: "Muchas gracias por utilizar nuestro servicio",
-      html: htmlTemplateReserved,
-    };
-    
-    transport.sendMail(info);
-    const infoReminder = {
-      from: `info@miturno.com`, //correo desde el cual se envía el mensaje ej: info@miturno.com
-      to: `${userData[0].email}`, //correo del usuario al cual se le enviará el mensaje. Correo con link para restablecer contraseña
-      subject: `miTurno del ${appointmentConfirm.date}/${appointmentConfirm.month}/${appointmentConfirm.year} a las ${appointmentConfirm.time}hs en sucursal ${branchOffice.location}`, //Asunto del mensaje
-      text: "Muchas gracias por utilizar nuestro servicio",
-      html: htmlTemplateReminder,
-    };
-    cron.schedule("* * 2 * * *", function() {
-      transport.sendMail(infoReminder);
-    }); //este bloque de código envía el correo de recordatorio al cliente a los 30 segundos simulando las 24 hs
-    
-    res.status(200).json("miTurno ha sido confirmado!");
+    const appointment = await Appointment.findById(id);
+
+    if (!appointment) {
+      return res.status(404).json({ message: "Turno no encontrado." });
+    }
+
+    if (appointment.user.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ message: "No tiene permiso para confirmar este turno." });
+    }
+
+    if (appointment.state !== "reservado") {
+      return res
+        .status(400)
+        .json({ message: "El turno no está en estado reservado." });
+    }
+
+    appointment.state = "confirmado";
+    await appointment.save();
+
+    res.status(200).json({ message: "Turno confirmado exitosamente." });
   } catch (err) {
-    res.status(404).json(err);
+    console.error("Error al confirmar el turno:", err);
+    res.status(500).json({ error: "Error al confirmar el turno." });
   }
 });
 
-// (8) Usuario - Destruye la existencia del turno ya que solo entra a un estado de elección de turno una vez que finaliza el tiempo del contador o el usuario cancela el turno en ese tiempo.
-router.delete("/:userId/myAppointment/deleteAppointment", async (req, res) => {
-  const { userId } = req.params;
-  const appointmentId = req.body.appointId;
-  const branchOfficeId = req.body.branchId;
+// (6) Cambiar estado a asistido
+router.put("/confirmAttendance", async (req, res) => {
+  const { appointmentId } = req.body;
 
   try {
-    const deleteAppointment = await Appointment.deleteOne({
-      _id: parseId(appointmentId),
-    });
-    res.status(204).json("Su reserva a caducado");
-    // elimina de BranchOffice el turno
-    const deleteAppointmentBranch = await BranchOffice.findByIdAndUpdate(
-      branchOfficeId,
-      {
-        $pull: { appointment: parseId(appointmentId) },
-      }
-    );
-    // elimina de User el turno
-    const deleteAppointmentUser = await User.findByIdAndUpdate(userId, {
-      $pull: { appointment: parseId(appointmentId) },
-    });
+    const appointment = await Appointment.findById(appointmentId);
+
+    if (!appointment) {
+      return res.status(404).json({ message: "Turno no encontrado." });
+    }
+
+    if (appointment.state !== "confirmado") {
+      return res
+        .status(400)
+        .json({ message: "El turno debe estar confirmado para ser asistido." });
+    }
+
+    appointment.state = "asistido";
+    await appointment.save();
+
+    res.status(200).json({ message: "Turno marcado como asistido." });
   } catch (err) {
-    res.status(404).json(err);
+    console.error("Error al marcar como asistido:", err);
+    res.status(500).json({ error: "Error al marcar como asistido." });
+  }
+});
+
+// (7) Cambiar estado a ausente
+router.put("/markAbsent", async (req, res) => {
+  const { appointmentId } = req.body;
+
+  try {
+    const appointment = await Appointment.findByIdAndUpdate(appointmentId, {
+      state: "ausente",
+    });
+
+    if (!appointment) {
+      return res.status(404).json({ message: "Turno no encontrado." });
+    }
+
+    res.status(200).json({ message: "Turno marcado como ausente." });
+  } catch (err) {
+    console.error("Error al marcar como ausente:", err);
+    res.status(500).json({ error: "Error al marcar como ausente." });
+  }
+});
+
+// (8) Obtener todos los turnos con información completa
+router.get("/all", async (req, res) => {
+  try {
+    const appointments = await Appointment.find()
+      .populate("user", "fname lname dni email")
+      .populate("branchOffice", "location address");
+
+    if (!appointments.length) {
+      return res.status(404).json({ message: "No hay turnos registrados." });
+    }
+
+    res.status(200).json({ data: appointments });
+  } catch (err) {
+    console.error("Error al obtener los turnos:", err);
+    res.status(500).json({ error: "Error al obtener los turnos." });
   }
 });
 

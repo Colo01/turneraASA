@@ -67,39 +67,48 @@ const AppointmentDetails = () => {
       appointId: editApp
     })
       .then((appointment) => {
-      console.log("todo el turno:", appointment.data)
-      setAppointmentId(appointment.data._id)
-      Report.info('miTurno', 'Tenés 10 minutos para confirmar el turno', 'Ok')
-      // if (editApp) navigate("/myappointments");
-    })
-    .catch(err => console.log(err))
-  }
-  const handleConfirm = () => {
-    axios.put(`http://localhost:5000/api/appointment/${user.id}/myAppointment/confirmed`, {
-      id: appointmentId
-    })
-      .then(() =>{
-        localStorage.removeItem('endTime')
-        dispatch(emptyAppointment())
-        Report.success('miTurno', 'El turno fue confirmado', 'Ok')
-        navigate("/myappointments")
+        console.log("Turno registrado:", appointment.data);
+        setAppointmentId(appointment.data._id);
+        Report.info('miTurno', 'Tenés 10 minutos para confirmar el turno', 'Ok');
       })
-      .catch(err => Report.failure(`${err}`))
-  }
-
+      .catch(err => Report.failure(`Error: ${err.response?.data?.message || 'No se pudo registrar el turno.'}`));
+  };
+  
+  const handleConfirm = () => {
+    axios
+      .put(`http://localhost:5000/api/appointment/${user.id}/myAppointment/confirmed`, {
+        id: appointmentId,
+      })
+      .then(() => {
+        localStorage.removeItem("endTime");
+        dispatch(emptyAppointment());
+        Report.success("miTurno", "El turno fue confirmado exitosamente.", "Ok");
+        navigate("/myappointments");
+      })
+      .catch((err) =>
+        Report.failure(
+          "Error al confirmar",
+          err.response?.data?.message || "No se pudo confirmar el turno.",
+          "Ok"
+        )
+      );
+  };
 
   const handleCancel = () => {
-    axios.delete(`http://localhost:5000/api/appointment/${user.id}/myAppointment/deleteAppointment`,{data: {
-      appointId: appointmentId,
-      branchId: pickedBranchOffice
-    }})
+    axios.delete(`http://localhost:5000/api/appointment/${user.id}/myAppointment/deleteAppointment`, {
+      data: {
+        appointId: appointmentId,
+        branchId: pickedBranchOffice._id
+      }
+    })
       .then(() => {
-        localStorage.removeItem('endTime')
-        dispatch(emptyAppointment())
-        Report.warning('miTurno', 'El turno fue cancelado', 'Ok')
+        localStorage.removeItem('endTime');
+        dispatch(emptyAppointment());
+        Report.warning('miTurno', 'El turno fue cancelado', 'Ok');
       })
-      .catch(err => Report.failure(`${err}`))
-  }
+      .catch(err => Report.failure(`Error: ${err.response?.data?.message || 'No se pudo cancelar el turno.'}`));
+  };
+  
 
   useEffect(() => {
     setHasClickedDetailsButton(false);
