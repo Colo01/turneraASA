@@ -1,16 +1,15 @@
-.timer{
-    border-color: #67eeaa;
-    border-style:double;
-    text-align: center;
-    margin-top: 10%;
-    margin-bottom: 2%;
-    
-    border-radius: 3%;
-    font-size: large;
-    padding: 2%;
+.timer {
+  border: 3px double #ffb703;
+  text-align: center;
+  margin: 2% auto;
+  border-radius: 5%;
+  font-size: 1.5rem;
+  padding: 1rem;
+  color: #ffffff;
+  background-color: #262833;
 }
- 
-#timer{
-    color:  #67eeaa;
-    margin-left: 4%;
+
+#timer {
+  color: #ffb703;
+  margin-left: 1rem;
 }

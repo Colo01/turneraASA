@@ -1,3 +1,20 @@
 .navbar {
   background-color: #262833 !important;
+  color: #ffb703;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  color: #ffffff;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #ffb703;
 }

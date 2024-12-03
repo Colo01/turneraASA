@@ -1,15 +1,12 @@
-/* .App {
-  text-align: center;
-} */
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+  animation: float infinite 3s ease-in-out;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    animation: App-logo-float infinite 3s ease-in-out;
+    animation: float infinite 3s ease-in-out;
   }
 }
 
@@ -19,14 +16,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 1.5rem;
+  background-color: #262833;
+  color: #ffffff;
 }
 
 .App-link {
-  color: rgb(112, 76, 182);
+  color: #ffb703;
+  text-decoration: none;
 }
 
-@keyframes App-logo-float {
+.App-link:hover {
+  text-decoration: underline;
+}
+
+@keyframes float {
   0% {
     transform: translateY(0);
   }
@@ -34,6 +38,6 @@
     transform: translateY(10px);
   }
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 }

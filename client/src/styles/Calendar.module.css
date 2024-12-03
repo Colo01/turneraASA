@@ -1,34 +1,37 @@
 .mainContainer {
-  height: calc(100vh - 62px);
+  height: 100vh;
   display: flex;
-  background-color: #3c3f50;
+  background-color: #262833;
 }
 
 .contentContainer {
-  background-color: white;
-  background-image: url("../../public/fondo.jpg");
+  background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.7)
+    ),
+    url("../../public/fondo.jpg") no-repeat center center;
+  background-size: cover;
   width: 100%;
-  margin: 40px 60px;
+  margin: 40px auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .tableContainer {
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 10px;
-  overflow: hidden;
   margin: auto;
 }
 
 .buttonsContainer {
-  width: calc(100%-60px);
-  margin: 40px;
+  margin: 20px auto;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .buttons {
@@ -36,12 +39,13 @@
   padding: 10px 15px;
   font-size: 16px;
   color: #fff;
-  background-color: #007bff;
+  background-color: #ffb703;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .buttons:hover {
-  background-color: #0056b3;
+  background-color: #fb8500;
 }

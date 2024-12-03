@@ -1,110 +1,20 @@
 .mainContainer {
-  height: calc(100vh - 62px);
+  height: 100vh;
   display: flex;
-
+  flex-direction: row;
 }
 
 .sideContainer {
-  background-color: #3c3f50;
-  width: 350px;
-  color: white;
-  padding: 40px 40px;
+  background-color: #262833;
+  width: 300px;
+  color: #ffffff;
+  padding: 1.5rem;
 }
 
 .contentContainer {
-  background-color: white;
-  background-image: url("../../public/fondo.jpg");
-  width: calc(100vw - 350px);
+  flex-grow: 1;
+  background: url("../../public/fondo.jpg") no-repeat center center / cover;
   display: flex;
   justify-content: center;
-}
-
-#dropBranches {
-  margin: 15px auto;
-  width: 50%;
-}
-
-.tableContainer {
-  width: 90%;
-  margin-top: 40px;
-  text-align: center;
-}
-
-.calendarContainer {
-  padding: 20px;
-  width: 50%;
-  margin: 40px auto;
-  background-color: aquamarine;
-  text-align: center;
-  border: 1px solid grey;
-  border-radius: 20px;
-}
-
-.userDetails > ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-.sideButton {
-  margin-top: 20px;
-  margin-right: 10px;
-}
-
-.fewStock {
-  text-align: center;
-  margin: 8px auto;
-  color: #ffc107;
-  font-size: medium;
-  background-color: #6c757d;
-  max-width: 324.466px;
-  border: 1px solid grey;
-  border-radius: 5px;
-
-}
-
-.agendados {
-  margin-top: 20px;
-  color: aquamarine;
-}
-
-.asistentes {
-  border: 2px solid white;
-  border-radius: 5px;
-  margin-top: 8px;
-  padding: 7px;
-}
-
-.asistentes > .sideButton {
-  margin: 10px 90px 4px;
-}
-
-.appointmentList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.appointmentItem {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
-
-.takeAppointmentButton {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.takeAppointmentButton:hover {
-  background-color: #218838;
 }

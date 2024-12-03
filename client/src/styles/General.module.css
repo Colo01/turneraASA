@@ -13,86 +13,25 @@
 .logoContainer {
   background-color: #262833;
   height: 64px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: 0;
   display: flex;
   justify-content: center;
-}
-
-@media (min-width: 768px) {
-  .logoContainer {
-    height: auto;
-    flex-grow: 4;
-  }
+  align-items: center;
 }
 
 .contentContainer {
   background-color: white;
-  flex-grow: 6;
+  flex-grow: 1;
   display: flex;
   align-items: center;
-  flex-basis: 0;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .contentContainer > div {
-  background-color: #67eeaa;
-  width: min(600px, 80%);
-/*   height: 600px;
- */  border: 1px solid grey;
-  border-radius: 20px;
-  padding: 20px 20px 15px;
-}
-
-@media (min-width: 768px) {
-  .contentContainer > div {
-    margin: 60px auto;
-  }
-}
-
-.largeLogo {
-  align-self: center;
-  display: none;
-}
-
-.smallLogo {
-  align-self: center;
-}
-
-@media (min-width: 768px) {
-  .smallLogo {
-    display: none;
-  }
-  .largeLogo {
-    display: block;
-  }
-}
-
-h2 {
-  text-align: center;
-}
-
-.boton {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.link {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.unregistred {
-  text-align: center;
-  margin-top: 60px;
-}
-
-.p {
-  margin: 0;
-}
-
-.formField {
-  margin-top: 12px;
+  background-color: #ffb703;
+  width: min(600px, 90%);
+  border-radius: 10px;
+  padding: 1.5rem;
 }
