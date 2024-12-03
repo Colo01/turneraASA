@@ -1,6 +1,8 @@
+// client/src/App.js
+
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import TurnosUsers from "./views/TurnosUser";
+import TurnosUser from "./views/TurnosUser";
 import General from "./views/General";
 import Register from "./views/Register";
 import Login from "./views/Login";
@@ -14,14 +16,13 @@ import CreateDeliveryPoint from "./views/CreateDeliveryPoint";
 import Welcome from "./views/Welcome";
 import MyAppointments from "./views/MyAppointments";
 import TurnosOperator from "./views/TurnosOperator";
+import Calendar from "./views/Calendar"; // Importa el componente correctamente
 
 import style from "./styles/App.module.css";
 
 function App() {
-  // Estado para manejar la oficina seleccionada
   const [selectedOffice, setSelectedOffice] = useState({});
 
-  // Función para seleccionar una oficina desde cualquier vista
   const selectOffice = (office) => {
     setSelectedOffice(office);
   };
@@ -29,21 +30,18 @@ function App() {
   return (
     <div className={style.App}>
       <Routes>
-        {/* Rutas principales */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/layout" element={<General />} />
         <Route path="/login" element={<Login />} />
         <Route path="/assist_password" element={<AssistPassword />} />
         <Route path="/restore_password" element={<RestorePassword />} />
-        <Route path="/calendar" element={<TurnosUsers />} />
+        <Route path="/calendar" element={<Calendar />} /> {/* Solución al error */}
         <Route path="/turnos_operator" element={<TurnosOperator />} />
         <Route path="/myaccount" element={<MyAccount />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/myappointments" element={<MyAppointments />} />
         <Route path="/users" element={<Users />} />
-
-        {/* Rutas para sucursales */}
         <Route
           path="/offices"
           element={<BranchOffices selectOffice={selectOffice} />}

@@ -1,3 +1,5 @@
+// api/routes/DeliveryPoint.js
+
 const express = require("express");
 const router = express.Router();
 const DeliveryPoint = require("../models/DeliveryPoint");
@@ -49,6 +51,8 @@ router.post("/admin/:adminId/add", async (req, res) => {
         time: `${hour}:${minute}`,
         availableSlots: 1,
         deliveryPoint: savedDeliveryPoint._id,
+        available: true, // IMPORTANTE
+        state: "disponible", // IMPORTANTE
       });
     }
 
@@ -65,6 +69,7 @@ router.post("/admin/:adminId/add", async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor." });
   }
 });
+
 
 // Eliminar sucursal
 router.delete("/:id", async (req, res) => {

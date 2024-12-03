@@ -1,0 +1,47 @@
+.mainContainer {
+  height: calc(100vh - 62px);
+  display: flex;
+  background-color: #3c3f50;
+}
+
+.contentContainer {
+  background-color: white;
+  background-image: url("../../public/fondo.jpg");
+  width: 100%;
+  margin: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tableContainer {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: auto;
+}
+
+.buttonsContainer {
+  width: calc(100%-60px);
+  margin: 40px;
+  display: flex;
+  justify-content: end;
+}
+
+.buttons {
+  margin-left: 20px;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.buttons:hover {
+  background-color: #0056b3;
+}
