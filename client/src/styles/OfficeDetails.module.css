@@ -43,7 +43,7 @@
   align-items: center;
   margin-bottom: 1rem;
   font-weight: bold;
-  color: #003366;
+  color: #5a2e26;
 }
 
 .buttonsContainer {
@@ -53,7 +53,7 @@
 }
 
 .buttons {
-  background-color: #003366;
+  background-color: #5a2e26;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -63,7 +63,7 @@
 }
 
 .buttons:hover {
-  background-color: #00509e;
+  background-color: #5a2e26;
 }
 
 /* Responsive adjustments */

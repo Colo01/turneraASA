@@ -37,14 +37,14 @@
 }
 
 .contentContainer h3 {
-  color: #003366;
+  color: #5a2e26;
   margin: 1rem 0;
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .contentContainer h3:hover {
-  color: #00509e;
+  color: #5a2e26;
 }
 
 /* Responsive adjustments */

@@ -9,13 +9,13 @@ body {
 }
 
 a {
-  color: #003366;
+  color: white;
   text-decoration: none;
   transition: color 0.3s;
 }
 
 a:hover {
-  color: #00509e;
+  color: white;
   text-decoration: underline;
 }
 
@@ -30,7 +30,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #003366;
+  color: white;
   margin: 0;
 }
 

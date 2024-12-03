@@ -21,7 +21,7 @@
 
 h2 {
   text-align: center;
-  color: #003366;
+  color: white;
   margin-bottom: 1.5rem;
 }
 
@@ -40,7 +40,7 @@ h2 {
 }
 
 .bootstrap-table thead th {
-  background-color: #003366;
+  background-color: #5a2e26;
   color: white;
   text-align: center;
 }
@@ -50,7 +50,7 @@ h2 {
 }
 
 .bootstrap-table .btn-primary {
-  background-color: #003366;
+  background-color: #5a2e26;
   border: none;
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
@@ -58,7 +58,7 @@ h2 {
 }
 
 .bootstrap-table .btn-primary:hover {
-  background-color: #00509e;
+  background-color: #5a2e26;
 }
 
 /* Responsive adjustments */

@@ -20,14 +20,14 @@
 .countdown-item span {
   display: block;
   font-size: 2.5rem; /* Tamaño grande para el número */
-  color: #003366; /* Azul oscuro, inspirado en el proyecto de solidaridad */
+  color: #5a2e26; /* Azul oscuro, inspirado en el proyecto de solidaridad */
   font-weight: bold;
 }
 
 .countdown-item label {
   display: block;
   font-size: 1rem; /* Tamaño pequeño para las etiquetas */
-  color: #00509e; /* Azul más claro para el texto */
+  color: #5a2e26; /* Azul más claro para el texto */
 }
 
 /* Responsive Design */

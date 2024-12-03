@@ -1,6 +1,6 @@
 /* Navbar container */
 .navbar {
-  background-color: #003366;
+  background-color: #5a2e26;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -48,7 +48,7 @@
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: #003366;
+  background-color: #5a2e26;
   padding: 1rem;
   z-index: 10;
 }
