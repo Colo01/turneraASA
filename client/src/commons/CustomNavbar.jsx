@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 import parseJwt from "../hooks/parseJwt";
 import capitalize from "../hooks/capitalize";
 //import countdown from "../utils/countdown";
-import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
-
+import { Confirm } from "notiflix/build/notiflix-confirm-aio";
 
 import style from "../styles/CustomNavbar.module.css";
 import { emptyBranchOffice } from "../features/branchOffice";
@@ -31,13 +30,13 @@ const CustomNavbar = () => {
       "Si",
       "No",
       () => {
-      localStorage.removeItem("endTime");
-      localStorage.removeItem("user");
-      localStorage.removeItem("branches");
-      dispatch(emptyAppointment());
-      dispatch(emptyBranchOffice())
+        localStorage.removeItem("endTime");
+        localStorage.removeItem("user");
+        localStorage.removeItem("branches");
+        dispatch(emptyAppointment());
+        dispatch(emptyBranchOffice());
         navigate("/");
-      },
+      }
     );
   };
 
@@ -45,24 +44,20 @@ const CustomNavbar = () => {
     <div>
       <Navbar variant="dark" expand="lg" className={style.navbar}>
         <Container fluid className="mx-4">
-          {!payload.admin && !payload.operator ? 
-          <Navbar.Brand href="/welcome">
-            <img 
-              src={require("../images/3.png")}
-              height="36px"
-              className="d-inline-block align-top"
-              alt="Logo mi turno"
-            />
-          </Navbar.Brand> : 
-          <Navbar.Brand href="/users">
-          <img 
-            src={require("../images/3.png")}
-            height="36px"
-            className="d-inline-block align-top"
-            alt="Logo mi turno"
-          />
-        </Navbar.Brand>
-          }
+          {!payload.admin && !payload.operator ? (
+            <Navbar.Brand href="/welcome">
+              <img src={require("../images/3.png")} />
+            </Navbar.Brand>
+          ) : (
+            <Navbar.Brand href="/users">
+              <img
+                src={require("../images/3.png")}
+                height="36px"
+                className="d-inline-block align-top"
+                alt="Logo mi turno"
+              />
+            </Navbar.Brand>
+          )}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <a className="navbar-brand ms-5" href="#">
             Hola {capitalize(payload.fname)}
@@ -79,7 +74,6 @@ const CustomNavbar = () => {
                   </Nav.Link>
                   <Nav.Link href="/turnos_operator" className="mx-3 fs-5">
                     Turnos
-                  
                   </Nav.Link>
                 </>
               ) : role === "OP" ? (

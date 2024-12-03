@@ -1,19 +1,12 @@
 /* Navbar container */
 .navbar {
-  background-color: #5a2e26;
+  background-color: #5a2e26; /* Terracota */
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1rem;
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-  text-decoration: none;
 }
 
 .navbar .menu {
@@ -25,11 +18,18 @@
   color: white;
   text-decoration: none;
   font-size: 1rem;
-  transition: color 0.3s;
+  font-weight: 500; /* Más legible */
+  transition: color 0.3s ease-in-out;
 }
 
 .navbar .menu a:hover {
-  color: #f5a623;
+  color: #f5a623; /* Amarillo para resaltar */
+}
+
+/* Logo adjustments */
+.navbar img {
+  height: 100px; /* Ajusta la altura según prefieras */
+  width: auto; /* Mantiene la proporción */
 }
 
 /* Mobile menu styles */
@@ -61,5 +61,9 @@
 
   .navbar .menu-toggle {
     display: block;
+  }
+
+  .navbar img {
+    height: 40px; /* Reduce el tamaño en móviles */
   }
 }
