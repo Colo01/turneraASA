@@ -1,7 +1,9 @@
+// api/routes/NewAppointment.js
+
 //Importo las collection y el middleware (parseId) usadas para esta funcionalidad.
 const Appointment = require("../models/Appointment");
 const User = require("../models/User");
-const BranchOffice = require("../models/BranchOffice");
+const BranchOffice = require("../models/DeliveryPoint");
 const parseId = require("../utils/functions");
 
 // Como argumentos debe recibir los datos que son utilizados para que la función pueda ejectuarse.

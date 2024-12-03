@@ -1,3 +1,5 @@
+// client/src/views/Welcome.jsx
+
 import React from "react";
 import { Link } from "react-router-dom";
 import CustomNavbar from "../commons/CustomNavbar";

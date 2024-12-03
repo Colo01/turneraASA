@@ -1,3 +1,5 @@
+// api/routes/auth.js
+
 require("dotenv").config();
 const router = require("express").Router();
 const User = require("../models/User");

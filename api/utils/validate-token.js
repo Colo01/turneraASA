@@ -1,3 +1,5 @@
+// api/routes/validate-token.js
+
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 

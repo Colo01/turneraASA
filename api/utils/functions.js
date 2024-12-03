@@ -1,3 +1,5 @@
+// api/routes/functions.js
+
 const mongoose = require("mongoose");
 
 // Funcion que toma el id que recibimos de Mongoose y recibirlo como un string.

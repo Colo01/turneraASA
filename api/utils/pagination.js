@@ -1,3 +1,5 @@
+// api/routes/pagination.js
+
 //Middleware para realizar la paginación a la información que queremos enviar.
 //Como argumento se pasa la collection que vamos a paginar y el numero límite que queremos que se vea por página.
 //Middleware no utilizado porque se atajó desde el front. Ejemplo de como usarlo: Carpeta 'routes' - Archivo 'users.js'. - (3)

@@ -1,3 +1,5 @@
+// client/src/features/useInput.js
+
 import { useState } from 'react';
 
 const useInput = () => {

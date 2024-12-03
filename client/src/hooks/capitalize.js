@@ -1,3 +1,5 @@
+// client/src/hooks/capitalize.js
+
 const capitalize = (str) => {
   const arr = str.split(" ");
   for (var i = 0; i < arr.length; i++) {

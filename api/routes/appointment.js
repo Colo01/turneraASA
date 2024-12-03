@@ -1,8 +1,10 @@
+// api/routes/appointment.js
+
 const { Router } = require("express");
 const router = Router();
 const User = require("../models/User");
 const Appointment = require("../models/Appointment");
-const BranchOffice = require("../models/BranchOffice");
+const BranchOffice = require("../models/DeliveryPoint");
 const parseId = require("../utils/functions");
 const NewAppointment = require("../utils/NewAppoinment");
 const Cancelar = require("../utils/Cancelar");
@@ -217,15 +219,65 @@ router.get("/all", async (req, res) => {
     const appointments = await Appointment.find()
       .populate("user", "fname lname dni email")
       .populate("branchOffice", "location address");
-
     if (!appointments.length) {
       return res.status(404).json({ message: "No hay turnos registrados." });
     }
-
     res.status(200).json({ data: appointments });
   } catch (err) {
     console.error("Error al obtener los turnos:", err);
     res.status(500).json({ error: "Error al obtener los turnos." });
+  }
+});
+
+// (9) Obtener turnos disponibles para un punto de entrega
+router.get("/availableAppointments", async (req, res) => {
+  const { deliveryPointId } = req.query;
+
+  try {
+    if (!deliveryPointId) {
+      return res
+        .status(400)
+        .json({ error: "Se requiere el ID del punto de entrega." });
+    }
+
+    const appointments = await Appointment.find({
+      branchOffice: deliveryPointId,
+      available: true, // Solo turnos disponibles
+    }).populate("branchOffice", "location address");
+
+    if (!appointments.length) {
+      return res.status(404).json({ message: "No hay turnos disponibles." });
+    }
+
+    res.status(200).json({ data: appointments });
+  } catch (err) {
+    console.error("Error al obtener turnos disponibles:", err);
+    res.status(500).json({ error: "Error interno del servidor." });
+  }
+});
+// (10) Reservar un turno
+router.post("/reserve", async (req, res) => {
+  const { userId, appointmentId } = req.body;
+
+  try {
+    const appointment = await Appointment.findById(appointmentId);
+
+    if (!appointment) {
+      return res.status(404).json({ error: "Turno no encontrado." });
+    }
+
+    if (!appointment.available) {
+      return res.status(400).json({ error: "El turno no está disponible." });
+    }
+
+    appointment.available = false; // Marcar el turno como reservado
+    appointment.user = userId; // Asignar el usuario al turno
+    await appointment.save();
+
+    res.status(200).json({ message: "Turno reservado exitosamente." });
+  } catch (err) {
+    console.error("Error al reservar turno:", err);
+    res.status(500).json({ error: "Error interno del servidor." });
   }
 });
 

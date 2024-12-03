@@ -1,3 +1,5 @@
+// client/src/views/General.jsx
+
 import React from "react";
 
 import style from "../styles/General.module.css";

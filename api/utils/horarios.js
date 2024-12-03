@@ -1,3 +1,5 @@
+// api/routes/horarios.js
+
 // Lógica inicial para el arreglo de turnos disponibles. Este archivo no tiene una funcionalidad puntual. Funcionalidad final utilizada en Carpeta 'routes' - Archivo 'availableAppointment.js'.
 //Recomendamos usar con Quokka para ver los console.log.
 

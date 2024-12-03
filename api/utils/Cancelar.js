@@ -1,3 +1,5 @@
+// api/routes/Cancelar.js
+
 //Importo la collection y el middleware (parseId) usadas para esta funcionalidad.
 const Appointment = require("../models/Appointment");
 const parseId = require("./functions")

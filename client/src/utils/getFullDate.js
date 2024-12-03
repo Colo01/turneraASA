@@ -1,3 +1,5 @@
+// client/src/utils/getFullDate.js
+
 export const getFullDate = (pickedDate) => {
     let { day, date, month, year } = pickedDate
     

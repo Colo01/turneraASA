@@ -1,14 +1,14 @@
-const express = require("express")
-const router = express.Router()
-const userRoutes = require("./users")
-const appointmentRoutes = require("./appointment")
-const branchOfficeRoutes = require("./branchOffice")
-const availableAppointment = require("./availableAppointment")
+// api/routes/index.js
 
-router.use("/users", userRoutes)
-router.use("/appointment", appointmentRoutes)
-router.use("/branchOffice", branchOfficeRoutes)
-router.use("/availableAppointment", availableAppointment)
+const express = require("express");
+const router = express.Router();
+
+const usersRoutes = require("./users");
+const deliveryPointRoutes = require("./DeliveryPoint");
+const availableAppointmentRoutes = require("./availableAppointment");
+
+router.use("/users", usersRoutes);
+router.use("/deliveryPoints", deliveryPointRoutes);
+router.use("/availableAppointments", availableAppointmentRoutes);
 
 module.exports = router;
-

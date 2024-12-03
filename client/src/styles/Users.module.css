@@ -78,3 +78,33 @@
 .asistentes > .sideButton {
   margin: 10px 90px 4px;
 }
+
+.appointmentList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.appointmentItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.takeAppointmentButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.takeAppointmentButton:hover {
+  background-color: #218838;
+}

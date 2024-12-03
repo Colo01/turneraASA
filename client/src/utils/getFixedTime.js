@@ -1,3 +1,5 @@
+// client/src/utils/getFixedTime.js
+
 export const getFixedTime = (pickedDate) => {
     const fixedHours = pickedDate.hours.length === 1 
                       ? `0${pickedDate.hours}`
