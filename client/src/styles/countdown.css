@@ -1,15 +1,51 @@
-.timer {
-  border: 3px double #ffb703;
-  text-align: center;
-  margin: 2% auto;
-  border-radius: 5%;
-  font-size: 1.5rem;
-  padding: 1rem;
-  color: #ffffff;
-  background-color: #262833;
+/* countdown.css - Estilo para el temporizador de cuenta regresiva */
+
+/* Contenedor principal del temporizador */
+.countdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f9f9f9; /* Fondo claro */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
-#timer {
-  color: #ffb703;
-  margin-left: 1rem;
+/* Elementos individuales del contador */
+.countdown-item {
+  margin: 0 10px;
+  text-align: center;
+}
+
+.countdown-item span {
+  display: block;
+  font-size: 2.5rem; /* Tamaño grande para el número */
+  color: #003366; /* Azul oscuro, inspirado en el proyecto de solidaridad */
+  font-weight: bold;
+}
+
+.countdown-item label {
+  display: block;
+  font-size: 1rem; /* Tamaño pequeño para las etiquetas */
+  color: #00509e; /* Azul más claro para el texto */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .countdown-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .countdown-item {
+    margin: 10px 0;
+  }
+
+  .countdown-item span {
+    font-size: 2rem;
+  }
+
+  .countdown-item label {
+    font-size: 0.9rem;
+  }
 }

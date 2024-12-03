@@ -1,20 +1,82 @@
+/* Styles specific to Users view */
 .mainContainer {
-  height: 100vh;
   display: flex;
-  flex-direction: row;
-}
-
-.sideContainer {
-  background-color: #262833;
-  width: 300px;
-  color: #ffffff;
-  padding: 1.5rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  background-color: #ffffff;
+  min-height: 100vh;
 }
 
 .contentContainer {
-  flex-grow: 1;
-  background: url("../../public/fondo.jpg") no-repeat center center / cover;
+  width: 100%;
+  max-width: 1200px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.tableContainer {
+  margin-top: 1rem;
+}
+
+/* Table styles */
+.bootstrap-table {
+  width: 100%;
+  margin: auto;
+}
+
+.bootstrap-table thead th {
+  background-color: #003366;
+  color: white;
+  text-align: center;
+}
+
+.bootstrap-table tbody td {
+  text-align: center;
+}
+
+.bootstrap-table .btn-primary {
+  background-color: #003366;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.bootstrap-table .btn-primary:hover {
+  background-color: #00509e;
+}
+
+/* Action buttons */
+.action-buttons {
   display: flex;
   justify-content: center;
-  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-buttons .badge {
+  background-color: #003366;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-buttons .badge:hover {
+  background-color: #00509e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentContainer {
+    padding: 1rem;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }

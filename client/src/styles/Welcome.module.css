@@ -1,22 +1,62 @@
+/* Styles specific to Welcome view */
 .mainContainer {
-  height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background-color: #262833;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 2rem;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.largeLogo {
+  width: 150px;
+  height: auto;
+}
+
+.smallLogo {
+  width: 120px;
+  height: auto;
 }
 
 .contentContainer {
-  background: white;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  max-width: 600px;
   text-align: center;
 }
 
-h3 {
-  color: #ffb703;
-  font-size: 2rem;
+.contentContainer h3 {
+  color: #003366;
+  margin: 1rem 0;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.contentContainer h3:hover {
+  color: #00509e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentContainer {
+    padding: 1rem;
+  }
+
+  .largeLogo {
+    width: 120px;
+  }
+
+  .smallLogo {
+    width: 100px;
+  }
 }

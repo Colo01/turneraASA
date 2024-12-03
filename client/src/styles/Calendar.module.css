@@ -1,51 +1,76 @@
+/* Styles specific to the Calendar view */
 .mainContainer {
-  height: 100vh;
-  display: flex;
-  background-color: #262833;
+  padding: 2rem;
+  background-color: #ffffff;
+  min-height: 100vh;
 }
 
 .contentContainer {
-  background: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.9),
-      rgba(255, 255, 255, 0.7)
-    ),
-    url("../../public/fondo.jpg") no-repeat center center;
-  background-size: cover;
-  width: 100%;
-  margin: 40px auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+  max-width: 1200px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 }
 
 .tableContainer {
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
+  margin-top: 1rem;
+}
+
+h2 {
+  text-align: center;
+  color: #003366;
+  margin-bottom: 1.5rem;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+/* Table-specific styles */
+.bootstrap-table {
+  width: 100%;
   margin: auto;
 }
 
-.buttonsContainer {
-  margin: 20px auto;
-  display: flex;
-  justify-content: flex-end;
+.bootstrap-table thead th {
+  background-color: #003366;
+  color: white;
+  text-align: center;
 }
 
-.buttons {
-  margin-left: 20px;
-  padding: 10px 15px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #ffb703;
+.bootstrap-table tbody td {
+  text-align: center;
+}
+
+.bootstrap-table .btn-primary {
+  background-color: #003366;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
 }
 
-.buttons:hover {
-  background-color: #fb8500;
+.bootstrap-table .btn-primary:hover {
+  background-color: #00509e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentContainer {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .form-select {
+    font-size: 0.9rem;
+  }
 }

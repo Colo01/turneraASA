@@ -1,37 +1,82 @@
+/* General layout and structure */
 .mainContainer {
-  height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-@media (min-width: 768px) {
-  .mainContainer {
-    flex-direction: row;
-  }
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #ffffff;
 }
 
 .logoContainer {
-  background-color: #262833;
-  height: 64px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.logoContainer img {
+  max-width: 150px;
+  height: auto;
 }
 
 .contentContainer {
-  background-color: white;
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  max-width: 500px;
+  width: 100%;
 }
 
-.contentContainer > div {
-  background-color: #ffb703;
-  width: min(600px, 90%);
-  border-radius: 10px;
-  padding: 1.5rem;
+.boton {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.boton button {
+  background-color: #003366;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.boton button:hover {
+  background-color: #00509e;
+}
+
+.unregistred {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.unregistred p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.unregistred a {
+  color: #003366;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.unregistred a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .contentContainer {
+    padding: 1rem;
+  }
+
+  .logoContainer img {
+    max-width: 120px;
+  }
 }
