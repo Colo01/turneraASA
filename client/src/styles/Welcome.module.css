@@ -1,63 +1,32 @@
-/* Styles specific to Welcome view */
 .mainContainer {
   background-image: url(../../public/fondo.jpg);
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-color: #ffffff;
-  padding: 2rem;
-}
-
-.logoContainer {
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  margin-bottom: 2rem;
-  gap: 1rem;
-}
-
-.largeLogo {
-  width: 150px;
-  height: auto;
-}
-
-.smallLogo {
-  width: 120px;
-  height: auto;
+  height: 100vh;
 }
 
 .contentContainer {
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   text-align: center;
 }
 
-.contentContainer h3 {
-  color: #5a2e26;
-  margin: 1rem 0;
-  cursor: pointer;
-  transition: color 0.3s;
+.button {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #4b2c20;
+  border: 2px solid #804d3d;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-.contentContainer h3:hover {
-  color: #5a2e26;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .contentContainer {
-    padding: 1rem;
-  }
-
-  .largeLogo {
-    width: 120px;
-  }
-
-  .smallLogo {
-    width: 100px;
-  }
+.button:hover {
+  background-color: #804d3d;
+  border-color: #4b2c20;
 }
