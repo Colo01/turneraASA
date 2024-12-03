@@ -1,5 +1,6 @@
 /* General layout and structure */
 .mainContainer {
+  background-image: url(../../public/fondo.jpg);
   display: flex;
   flex-direction: column;
   align-items: center;

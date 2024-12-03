@@ -1,5 +1,6 @@
 /* General styling for the main app */
 .appContainer {
+  background-image: url(../../public/fondo.jpg);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
