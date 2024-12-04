@@ -27,7 +27,7 @@ function Login() {
         // Validar y guardar el usuario en localStorage
         const token = JSON.parse(localStorage.getItem("user")).data.token;
         const payload = parseJwt(token);
-  
+
         if (!payload.id) {
           console.error("El payload no contiene el ID del usuario.");
           Report.failure(
@@ -37,7 +37,7 @@ function Login() {
           );
           return;
         }
-  
+
         localStorage.setItem(
           "user",
           JSON.stringify({
@@ -47,7 +47,7 @@ function Login() {
             },
           })
         );
-  
+
         payload.admin
           ? navigate("/users")
           : payload.operator
@@ -62,16 +62,10 @@ function Login() {
         );
       });
   };
-  
 
   return (
     <div className={style.mainContainer}>
       <div className={style.logoContainer}>
-        <img
-          className={style.largeLogo}
-          src={require("../images/1.png")}
-          alt="miTurno"
-        />
         <img
           className={style.smallLogo}
           src={require("../images/2.png")}
