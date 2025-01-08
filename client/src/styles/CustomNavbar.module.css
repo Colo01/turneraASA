@@ -1,69 +1,71 @@
 /* Navbar container */
 .navbar {
-  background-color: #5a2e26; /* Terracota */
+  width: 100%;
+  background-color: #4a1c07;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
-  color: white;
+  padding: 0 1.5rem;
+  height: 100px; /* Ajusta la altura */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
 
-.navbar .menu {
+/* Sección izquierda (Logo y saludo) */
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Espaciado entre logo y saludo */
+}
+
+/* Estilo del logo */
+.logo {
+  height: 60px;
+  width: auto;
+}
+
+/* Texto estático "Hola [usuario]" */
+.userGreeting {
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Menú de navegación */
+.menu {
   display: flex;
   gap: 1.5rem;
 }
 
-.navbar .menu a {
-  color: white;
-  text-decoration: none;
+.menuItem {
+  color: #ffffff;
   font-size: 1rem;
-  font-weight: 500; /* Más legible */
-  transition: color 0.3s ease-in-out;
-}
-
-.navbar .menu a:hover {
-  color: #f5a623; /* Amarillo para resaltar */
-}
-
-/* Logo adjustments */
-.navbar img {
-  height: 100px; /* Ajusta la altura según prefieras */
-  width: auto; /* Mantiene la proporción */
-}
-
-/* Mobile menu styles */
-.navbar .menu-toggle {
-  display: none;
-  font-size: 1.5rem;
+  font-weight: 600;
   cursor: pointer;
-  color: white;
+  transition: transform 0.2s ease, color 0.3s ease;
 }
 
-.navbar .menu.active {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #5a2e26;
-  padding: 1rem;
-  z-index: 10;
+.menuItem:hover {
+  color: #f5a623;
+  transform: scale(1.1); /* Efecto de agrandado */
 }
 
-/* Responsive adjustments */
+/* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
-  .navbar .menu {
-    display: none;
+  .navbar {
+    height: 70px;
+    padding: 0 1rem;
   }
 
-  .navbar .menu-toggle {
-    display: block;
+  .logo {
+    height: 40px;
   }
 
-  .navbar img {
-    height: 40px; /* Reduce el tamaño en móviles */
+  .menu {
+    gap: 1rem;
+  }
+
+  .menuItem {
+    font-size: 0.9rem;
   }
 }

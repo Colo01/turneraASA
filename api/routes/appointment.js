@@ -9,16 +9,16 @@ const parseId = require("../utils/functions");
 require("dotenv").config();
 
 /* Rutas
-(1) Crear turno
-(2) Cancelar turno
-(3) Mostrar turnos del usuario
-(4) Confirmar turno
-(5) Marcar turno como asistido/ausente
-(6) Obtener turnos disponibles
-(7) Reservar turno
+(1) Obtener turnos disponibles para un punto de entrega
+(2) Reservar un turno por el usuario
+(3) Mostrar turnos de un usuario
+(4) Mostrar turnos de un usuario
+
+# En teoria 3 y 4 hacen lo  mismo pero si uno borra uno el otro deja de fucionar.
+
 */
 
-// (6) Obtener turnos disponibles para un punto de entrega
+// (1) Obtener turnos disponibles para un punto de entrega
 router.get("/availableAppointments", async (req, res) => {
   const { deliveryPointId } = req.query;
 
@@ -39,9 +39,7 @@ router.get("/availableAppointments", async (req, res) => {
   }
 });
 
-
-
-// (7) Reservar un turno
+// (2) Reservar un turno por el usuario
 router.post("/reserve", async (req, res) => {
   const { userId, appointmentId } = req.body;
 
@@ -114,7 +112,7 @@ router.get("/:id/showAppointments", async (req, res) => {
 });
 
 
-// a huevo
+// (4) Mostrar turnos de un usuario
 router.get("/myAppointments", async (req, res) => {
   const { userId } = req.query; // Usa query params para obtener el ID del usuario
   if (!userId) {
@@ -132,6 +130,7 @@ router.get("/myAppointments", async (req, res) => {
     console.error("Error al obtener los turnos:", error.message);
     res.status(500).json({ error: "Error interno del servidor." });
   }
+
 });
 
 

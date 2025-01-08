@@ -1,73 +1,90 @@
-/* Styles specific to Users view */
+/* Styles specific to TurnosOperator view */
 .mainContainer {
-  background-image: url(../../public/fondo.jpg);
+  background-image: url(../../public/background-trigo.webp);
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 2rem;
-  background-color: #ffffff;
-  min-height: 100vh;
+  justify-content: center;
+  position: relative;
 }
 
 .contentContainer {
   width: 100%;
-  max-width: 1200px;
-  background-color: #f9f9f9;
+  max-width: 1600px;
+  background-color: #ffffff; /* Fondo sólido para el contenedor */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .tableContainer {
   margin-top: 1rem;
+  background-color: #ffffff; /* Fondo sólido para la tabla */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Table styles */
+/* Table-specific styles */
 .bootstrap-table {
   width: 100%;
   margin: auto;
+  border-collapse: collapse;
+  background-color: #ffffff; /* Fondo sólido dentro de la tabla */
 }
 
 .bootstrap-table thead th {
-  background-color: #5a2e26;
+  background-color: #5a2e26; /* Encabezados en marrón oscuro */
   color: white;
   text-align: center;
 }
 
 .bootstrap-table tbody td {
   text-align: center;
+  padding: 10px;
+  border: 1px solid #ddd; /* Bordes claros entre celdas */
+  background-color: #ffffff; /* Fondo blanco para las celdas */
 }
 
-.bootstrap-table .btn-primary {
-  background-color: #5a2e26;
+.bootstrap-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2; /* Color de fila alternada */
+}
+
+.bootstrap-table tbody tr:hover {
+  background-color: #e9ecef; /* Color al pasar el mouse */
+}
+
+/* Buttons for actions */
+.attendedBtn,
+.absentBtn {
+  display: inline-block;
+  background-color: #28a745; /* Verde */
+  color: white;
   border: none;
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-.bootstrap-table .btn-primary:hover {
-  background-color: #5a2e26;
-}
-
-/* Action buttons */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.action-buttons .badge {
-  background-color: #5a2e26;
-  color: white;
-  padding: 0.5rem;
-  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  margin-right: 5px; /* Espaciado entre botones */
+  transition: background-color 0.3s ease;
 }
 
-.action-buttons .badge:hover {
-  background-color: #5a2e26;
+.absentBtn {
+  background-color: #dc3545; /* Rojo */
+}
+
+.attendedBtn:hover {
+  background-color: #218838; /* Verde oscuro */
+}
+
+.absentBtn:hover {
+  background-color: #c82333; /* Rojo oscuro */
+}
+
+/* Adjust column width for "Actions" */
+.bootstrap-table th[data-field="actions"],
+.bootstrap-table td[data-field="actions"] {
+  min-width: 140px; /* Espacio suficiente para ambos botones */
 }
 
 /* Responsive adjustments */
@@ -76,8 +93,8 @@
     padding: 1rem;
   }
 
-  .action-buttons {
-    flex-direction: column;
-    gap: 0.5rem;
+  .bootstrap-table th[data-field="actions"],
+  .bootstrap-table td[data-field="actions"] {
+    min-width: 120px; /* Ajuste para pantallas pequeñas */
   }
 }

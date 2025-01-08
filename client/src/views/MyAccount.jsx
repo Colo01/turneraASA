@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import capitalize from "../hooks/capitalize";
 import { Confirm } from "notiflix/build/notiflix-confirm-aio";
 import { useNavigate } from "react-router-dom";
+import userImage from "../images/usuario.png";
 
 
 import style from "../styles/MyAccount.module.css";
@@ -103,189 +104,171 @@ const MyAccount = () => {
             <div className={style.contentContainer}>
               <Form>
                 <div className={style.userDetails}>
-                  <div className={style.titleContainer}>
-                    <h3>Mi Perfil</h3>
-                    <Button
-                      variant="secondary"
-                      className={style.buttons}
-                      onClick={() => {
-                        setIsEditing(true);
-                      }}
-                    >
-                      <i className="bi bi-pencil-square"></i>
-                      &nbsp;&nbsp;Editar
-                    </Button>
-                  </div>
+                <img
+                    src={userImage}
+                    alt="User"
+                    className={style.profileImage}
+                  />
+                  <h1 className={style.title}>Mi Perfil</h1>
                   <ul>
-                    <li>
-                      ID:&emsp;{payload.id}
-                      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Rol:{" "}
-                      {userData.admin ? "AD" : userData.operator ? "OP" : "CL"}
-                    </li>
-                    <li>
-                      Apellido:&emsp;
-                      {isEditing ? (
-                        <div className="form-group">
-                          <Field
-                            name="lname"
-                            className={
-                              formik.touched.name && formik.errors.name
-                                ? "form-control is-invalid"
-                                : "form-control"
-                            }
-                            type="text"
-                          />
-                          {formik.touched.name && formik.errors.name ? (
-                            <div className="invalid-feedback">
-                              {formik.errors.name}
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : (
-                        capitalize(userData.lname)
-                      )}
-                    </li>
-                    <li>
-                      Nombre:&emsp;
-                      {isEditing ? (
-                        <div className="form-group">
-                          <Field
-                            name="fname"
-                            className={
-                              formik.touched.name && formik.errors.name
-                                ? "form-control is-invalid"
-                                : "form-control"
-                            }
-                            type="text"
-                          />
-                          {formik.touched.name && formik.errors.name ? (
-                            <div className="invalid-feedback">
-                              {formik.errors.name}
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : (
-                        capitalize(userData.fname)
-                      )}
-                    </li>
-                    <li>
-                      DNI:&emsp;
-                      {isEditing ? (
-                        <div className="form-group">
-                          <Field
-                            name="dni"
-                            className={
-                              formik.touched.name && formik.errors.name
-                                ? "form-control is-invalid"
-                                : "form-control"
-                            }
-                            type="text"
-                          />
-                          {formik.touched.name && formik.errors.name ? (
-                            <div className="invalid-feedback">
-                              {formik.errors.name}
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : (
-                        userData.dni
-                      )}
-                    </li>
-                    <li>
-                      E-mail:&emsp;
-                      {isEditing ? (
-                        <div className="form-group">
-                          <Field
-                            name="email"
-                            className={
-                              formik.touched.name && formik.errors.name
-                                ? "form-control is-invalid"
-                                : "form-control"
-                            }
-                            type="text"
-                          />
-                          {formik.touched.name && formik.errors.name ? (
-                            <div className="invalid-feedback">
-                              {formik.errors.name}
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : (
-                        userData.email
-                      )}
-                    </li>
-                    <li>
-                      Fecha de nacimiento:&emsp;
-                      {isEditing ? (
-                        <div className="form-group">
-                          <Field
-                            name="birthdate"
-                            className={
-                              formik.touched.name && formik.errors.name
-                                ? "form-control is-invalid"
-                                : "form-control"
-                            }
-                            type="text"
-                          />
-                          {formik.touched.name && formik.errors.name ? (
-                            <div className="invalid-feedback">
-                              {formik.errors.name}
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : (
-                        userData.birthdate
-                      )}
-                    </li>
-                    <li>
-                      Teléfono:&emsp;
-                      {isEditing ? (
-                        <div className="form-group">
-                          <Field
-                            name="phone"
-                            className={
-                              formik.touched.name && formik.errors.name
-                                ? "form-control is-invalid"
-                                : "form-control"
-                            }
-                            type="text"
-                          />
-                          {formik.touched.name && formik.errors.name ? (
-                            <div className="invalid-feedback">
-                              {formik.errors.name}
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : (
-                        userData.phone
-                      )}
-                    </li>
-                    <li>
-                      Domicilio:&emsp;
-                      {isEditing ? (
-                        <div className="form-group">
-                          <Field
-                            name="address"
-                            className={
-                              formik.touched.name && formik.errors.name
-                                ? "form-control is-invalid"
-                                : "form-control"
-                            }
-                            type="text"
-                          />
-                          {formik.touched.name && formik.errors.name ? (
-                            <div className="invalid-feedback">
-                              {formik.errors.name}
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : userData.address ? (
-                        capitalize(userData.address)
-                      ) : (
-                        userData.address
-                      )}
-                    </li>
-                  </ul>
+  {/* Renderizamos "ID" y "Rol" solo si el usuario no es cliente */}
+  {userData.admin || userData.operator ? (
+    <li>
+      ID:&emsp;{payload.id}
+      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Rol:{" "}
+      {userData.admin ? "AD" : userData.operator ? "OP" : "CL"}
+    </li>
+  ) : null}
+  <li>
+    Apellido:&emsp;
+    {isEditing ? (
+      <div className="form-group">
+        <Field
+          name="lname"
+          className={
+            formik.touched.name && formik.errors.name
+              ? "form-control is-invalid"
+              : "form-control"
+          }
+          type="text"
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="invalid-feedback">{formik.errors.name}</div>
+        ) : null}
+      </div>
+    ) : (
+      capitalize(userData.lname)
+    )}
+  </li>
+  <li>
+    Nombre:&emsp;
+    {isEditing ? (
+      <div className="form-group">
+        <Field
+          name="fname"
+          className={
+            formik.touched.name && formik.errors.name
+              ? "form-control is-invalid"
+              : "form-control"
+          }
+          type="text"
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="invalid-feedback">{formik.errors.name}</div>
+        ) : null}
+      </div>
+    ) : (
+      capitalize(userData.fname)
+    )}
+  </li>
+  <li>
+    DNI:&emsp;
+    {isEditing ? (
+      <div className="form-group">
+        <Field
+          name="dni"
+          className={
+            formik.touched.name && formik.errors.name
+              ? "form-control is-invalid"
+              : "form-control"
+          }
+          type="text"
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="invalid-feedback">{formik.errors.name}</div>
+        ) : null}
+      </div>
+    ) : (
+      userData.dni
+    )}
+  </li>
+  <li>
+    E-mail:&emsp;
+    {isEditing ? (
+      <div className="form-group">
+        <Field
+          name="email"
+          className={
+            formik.touched.name && formik.errors.name
+              ? "form-control is-invalid"
+              : "form-control"
+          }
+          type="text"
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="invalid-feedback">{formik.errors.name}</div>
+        ) : null}
+      </div>
+    ) : (
+      userData.email
+    )}
+  </li>
+  <li>
+    Fecha de nacimiento:&emsp;
+    {isEditing ? (
+      <div className="form-group">
+        <Field
+          name="birthdate"
+          className={
+            formik.touched.name && formik.errors.name
+              ? "form-control is-invalid"
+              : "form-control"
+          }
+          type="text"
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="invalid-feedback">{formik.errors.name}</div>
+        ) : null}
+      </div>
+    ) : (
+      userData.birthdate
+    )}
+  </li>
+  <li>
+    Teléfono:&emsp;
+    {isEditing ? (
+      <div className="form-group">
+        <Field
+          name="phone"
+          className={
+            formik.touched.name && formik.errors.name
+              ? "form-control is-invalid"
+              : "form-control"
+          }
+          type="text"
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="invalid-feedback">{formik.errors.name}</div>
+        ) : null}
+      </div>
+    ) : (
+      userData.phone
+    )}
+  </li>
+  <li>
+    Domicilio:&emsp;
+    {isEditing ? (
+      <div className="form-group">
+        <Field
+          name="address"
+          className={
+            formik.touched.name && formik.errors.name
+              ? "form-control is-invalid"
+              : "form-control"
+          }
+          type="text"
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="invalid-feedback">{formik.errors.name}</div>
+        ) : null}
+      </div>
+    ) : userData.address ? (
+      capitalize(userData.address)
+    ) : (
+      userData.address
+    )}
+  </li>
+</ul>
                 </div>
                 <div className={style.buttonsContainer}>
                   {isEditing ? (
@@ -311,6 +294,16 @@ const MyAccount = () => {
                   ) : (
                     <></>
                   )}
+                    <Button
+                      variant="secondary"
+                      className={style.buttons}
+                      onClick={() => {
+                        setIsEditing(true);
+                      }}
+                    >
+                      <i className="bi bi-pencil-square"></i>
+                      &nbsp;&nbsp;Editar
+                  </Button>
                   <Button
                     variant="secondary"
                     className={style.buttons}

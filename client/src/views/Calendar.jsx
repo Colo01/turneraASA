@@ -1,3 +1,5 @@
+// client/src/views/Calendar.jsx
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BootstrapTable from "react-bootstrap-table-next";
@@ -8,6 +10,7 @@ import filterFactory from "react-bootstrap-table2-filter";
 import style from "../styles/Calendar.module.css";
 import { Report } from "notiflix/build/notiflix-report-aio";
 import { useNavigate } from "react-router-dom";
+import { Confirm } from "notiflix/build/notiflix-confirm-aio";
 
 const Calendar = () => {
   const [offices, setOffices] = useState([]);
@@ -80,28 +83,39 @@ const Calendar = () => {
       return;
     }
   
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/appointment/reserve",
-        { userId, appointmentId },
-        { headers: { Authorization: `Bearer ${user.data.token}` } }
-      );
+    // Confirmación antes de reservar el turno
+    Confirm.show(
+      "Confirmar Reserva",
+      "¿Está seguro de que desea reservar este turno?",
+      "Sí",
+      "No",
+      async () => {
+        try {
+          const response = await axios.post(
+            "http://localhost:5000/api/appointment/reserve",
+            { userId, appointmentId },
+            { headers: { Authorization: `Bearer ${user.data.token}` } }
+          );
   
-      Report.success(
-        "Reserva Exitosa",
-        response.data.message,
-        "Ir a Mis Turnos",
-        () => navigate("/myappointments")
-      );
+          Report.success(
+            "Reserva Exitosa",
+            response.data.message,
+            "Ir a Mis Turnos",
+            () => navigate("/myappointments")
+          );
   
-      // Actualizar lista de turnos disponibles
-      if (selectedOffice) loadAppointments(selectedOffice._id);
-    } catch (error) {
-      const errorMsg = error.response?.data?.error || "Error al reservar turno.";
-      Report.failure("Error", errorMsg, "Ok");
-      console.error("Error al reservar turno:", error);
-    }
-  };  
+          // Actualizar lista de turnos disponibles
+          if (selectedOffice) loadAppointments(selectedOffice._id);
+        } catch (error) {
+          const errorMsg =
+            error.response?.data?.error || "Error al reservar turno.";
+          Report.failure("Error", errorMsg, "Ok");
+          console.error("Error al reservar turno:", error);
+        }
+      }
+    );
+  };
+  
   
 
   const officeOptions = offices.map((office) => (
@@ -143,7 +157,7 @@ const Calendar = () => {
       <div className={style.mainContainer}>
         <div className={style.contentContainer}>
           <div className={style.tableContainer}>
-            <h2 style={{ textAlign: "center", color: "#fff" }}>
+            <h2 style={{ textAlign: "center", color: "#4a1c07" }}>
               Calendario de Turnos
             </h2>
             <select
@@ -153,7 +167,7 @@ const Calendar = () => {
               }
               style={{ margin: "20px 0", padding: "10px" }}
             >
-              <option value="">Selecciona una sucursal</option>
+              <option value="">Selecciona una capaña de entrega</option>
               {officeOptions}
             </select>
             <BootstrapTable

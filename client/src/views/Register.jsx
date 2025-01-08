@@ -1,278 +1,288 @@
 // client/src/views/Register.jsx
 
-//import { useState } from 'react';
-import Button from "react-bootstrap/Button";
-//import Alert from 'react-bootstrap/Alert';
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
-//import useInput from '../hooks/useInput';
 import { useDispatch } from "react-redux";
 import { userRegister } from "../features/user";
-import style from "../styles/General.module.css";
+import style from "../styles/Register.module.css";
 import { usePasswordToggle } from "../utils/togglePasswordVisibility";
 import { Report } from "notiflix/build/notiflix-report-aio";
 
 function Register() {
   const navigate = useNavigate();
   const [inputType, icon] = usePasswordToggle();
-
-  /* const [fname, setFname] = useState();
-  const [lname, setLname] = useState();
-  const [dni, setDni] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [rePassword, setRePassword] = useState(); */
-
   const dispatch = useDispatch();
 
-  if (localStorage.getItem("registered")) localStorage.removeItem("registered");
-  /* 
-  const user = localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user'))
-    : {} */
-
-  // const [showPassword, setShowPassword] = useState(false);
-
-  // const user = localStorage.getItem("user")
-  //   ? JSON.parse(localStorage.getItem("user"))
-  //   : {};
-
-  const handleRegister = (values) => {
-    dispatch(
-      userRegister({
-        fname: values.fname,
-        lname: values.lname,
-        dni: values.dni,
-        email: values.email,
-        password: values.password,
-      })
-    ).then(() => {
-      const registered =
-        JSON.parse(localStorage.getItem("registered")).data.fname || null;
-      console.log("ESTO ES el FNAME de REGISTERED", registered);
-      if (registered) {
+  const handleRegister = async (values) => {
+    try {
+      // Excluye el campo rePassword antes de enviar al backend
+      const { rePassword, ...dataToSend } = values;
+  
+      console.log("Datos enviados al backend:", dataToSend);
+      const response = await dispatch(userRegister(dataToSend)).unwrap();
+  
+      if (response.success) {
         Report.success(
           "¡Registro exitoso!",
-          "Recibirás un email confirmando tu registro.<br/>Ya podés loguearte y comenzar a utilizar miTurno.",
+          "Recibirás un email confirmando tu registro.",
           "Ok"
         );
         navigate("/login");
       } else {
         Report.failure(
           "Ocurrió un problema...",
-          "Ingresá nuevamente tu información de registro, por favor.",
+          response.msg || "Error desconocido",
           "Ok"
         );
-        navigate("/register");
       }
-      // alert(registered
-      // ? 'Hola ' + registered + ', te has registrado exitosamente!'
-      // : 'Problema en el registro')
-    });
-    // .then(() => navigate("/login"));
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      Report.failure(
+        "Ocurrió un problema...",
+        error.message || "Error desconocido",
+        "Ok"
+      );
+    }
   };
+  
 
+  // Esquema de validación
   const validate = Yup.object({
     fname: Yup.string()
-      .min(3, "El nombre debe tener al menos 3 caracteres")
-      .matches(/^[aA-zZ\s]+$/, "Sólo se permiten letras en este campo")
-      .required("Se requiere un nombre"),
+      .required("Se requiere un nombre")
+      .min(3, "Debe tener al menos 3 caracteres"),
     lname: Yup.string()
-      .min(2, "El nombre debe tener al menos 2 caracteres")
-      .matches(/^[aA-zZ\s]+$/, "Sólo se permiten letras en este campo")
-      .required("Se requiere un apellido"),
+      .required("Se requiere un apellido")
+      .min(2, "Debe tener al menos 2 caracteres"),
     dni: Yup.number()
-      .min(1000000, "El formato de número de DNI es incorrecto")
-      .required("Se requiere su número de DNI"),
+      .typeError("El DNI debe ser un número")
+      .required("Se requiere el DNI"),
+    studentNumber: Yup.number()
+      .typeError("El número de alumno debe ser un número")
+      .required("Se requiere un número de alumno")
+      .max(99999, "El número no puede superar las 5 cifras"),
+    address: Yup.string()
+      .required("Se requiere una numeración")
+      .min(8, "La dirección debe ser más descriptiva"),
     email: Yup.string()
-      .email("El formato de email ingresado no es válido")
+      .email("Email no válido")
       .required("Se requiere un email"),
     password: Yup.string()
-      .min(8, "La contraseña debe tener al menos 8 caracteres")
-      .matches(/^(?=.*[a-z])/, "La contraseña debe tener al menos 1 minúscula")
-      .matches(/^(?=.*[A-Z])/, "La contraseña debe tener al menos 1 mayúscula")
-      .matches(/^(?=.*[0-9])/, "La contraseña debe tener al menos 1 número")
-      .required("Se requiere contraseña"),
+      .required("Se requiere contraseña")
+      .min(8, "Debe tener al menos 8 caracteres"),
     rePassword: Yup.string()
       .oneOf([Yup.ref("password"), null], "La contraseña no coincide")
       .required("Se requiere confirmación de contraseña"),
+    career: Yup.string()
+      .required("Se requiere una carrera")
+      .max(40, "La carrera no puede superar los 40 caracteres"), // Validación para el campo
+      story: Yup.string()
+      .required("Se requiere una historia")
+      .max(500, "La historia debe ser breve (máximo 500 caracteres)"),
   });
-
+  
   return (
     <div className={style.mainContainer}>
+      <div className={style.blurOverlay}></div>
+      <div className={style.registerBox}>
       <div className={style.logoContainer}>
-        <img
-          className={style.largeLogo}
-          src={require("../images/1.png")}
-          alt="miTurno"
-        />
-        <img
-          className={style.smallLogo}
-          src={require("../images/2.png")}
-          alt="miTurno"
-        />
+          <img
+            className={style.logo}
+            src={require("../images/usuario.png")}
+            alt="miTurno"
+          />
       </div>
-
       <Formik
-        initialValues={{
-          fname: "",
-          lname: "",
-          dni: "",
-          email: "",
-          password: "",
-          rePassword: "",
-        }}
-        validationSchema={validate}
-        onSubmit={(values) => {
-          handleRegister(values);
-        }}
-      >
-        {(formik, isSubmitting) => (
-          <div className={style.contentContainer}>
-            <div>
-              <h2>Registro</h2>
-
-              <Form>
-                <div className="form-group">
-                  <label className={style.formField} htmlFor="fname">
-                    Nombre
-                  </label>
-                  <Field
-                    name="fname"
-                    placeholder="Ingrese su nombre"
-                    type="text"
-                    className={
-                      formik.touched.fname && formik.errors.fname
-                        ? "form-control is-invalid"
-                        : "form-control"
-                    }
-                  />
-                  {formik.touched.fname && formik.errors.fname ? (
-                    <div className="invalid-feedback">
-                      {formik.errors.fname}
-                    </div>
-                  ) : null}
+          initialValues={{
+            fname: "",
+            lname: "",
+            dni: "",
+            studentNumber: "",
+            address: "",
+            email: "",
+            password: "",
+            rePassword: "",
+            career: "", // Campo añadido
+            story: "", // Valor predeterminado
+          }}
+          validationSchema={validate}
+          onSubmit={(values) => handleRegister(values)}
+        >
+          {({ touched, errors }) => (
+            <Form>
+            <div className={`${style.formGrid}`}>
+              <div className={style.leftColumn}>
+                <div className={style.formGroup}>
+                  <div className={style.inputContainer}>
+                    <Field
+                      name="fname"
+                      placeholder="Nombre"
+                      className={`${style.input} ${
+                        touched.fname && errors.fname ? style.inputError : ""
+                      }`}
+                    />
+                    {touched.fname && errors.fname && (
+                      <span className={style.tooltip}>{errors.fname}</span>
+                    )}
+                  </div>
                 </div>
-
-                <div className="form-group">
-                  <label className={style.formField} htmlFor="fname">
-                    Apellido
-                  </label>
-                  <Field
-                    name="lname"
-                    placeholder="Ingrese su apellido"
-                    type="text"
-                    className={
-                      formik.touched.lname && formik.errors.lname
-                        ? "form-control is-invalid"
-                        : "form-control"
-                    }
-                  />
-                  {formik.touched.lname && formik.errors.lname ? (
-                    <div className="invalid-feedback">
-                      {formik.errors.lname}
-                    </div>
-                  ) : null}
+                <div className={style.formGroup}>
+                  <div className={style.inputContainer}>
+                    <Field
+                      name="dni"
+                      placeholder="DNI"
+                      type="number"
+                      className={`${style.input} ${
+                        touched.dni && errors.dni ? style.inputError : ""
+                      }`}
+                    />
+                    {touched.dni && errors.dni && (
+                      <span className={style.tooltip}>{errors.dni}</span>
+                    )}
+                  </div>
                 </div>
-
-                <div className="form-group">
-                  <label className={style.formField} htmlFor="dni">
-                    N° documento
-                  </label>
-                  <Field
-                    name="dni"
-                    placeholder="Ingrese su n° de documento (sin puntos. Ej.: 34345345)"
-                    type="number"
-                    className={
-                      formik.touched.dni && formik.errors.dni
-                        ? "form-control is-invalid"
-                        : "form-control"
-                    }
-                  />
-                  {formik.touched.dni && formik.errors.dni ? (
-                    <div className="invalid-feedback">{formik.errors.dni}</div>
-                  ) : null}
+                <div className={style.formGroup}>
+                  <div className={style.inputContainer}>
+                    <Field
+                      name="address"
+                      placeholder="Dirección (Calle y número)"
+                      className={`${style.input} ${
+                        touched.address && errors.address ? style.inputError : ""
+                      }`}
+                    />
+                    {touched.address && errors.address && (
+                      <span className={style.tooltip}>{errors.address}</span>
+                    )}
+                  </div>
                 </div>
-
-                <div className="form-group">
-                  <label className={style.formField} htmlFor="email">
-                    Email
-                  </label>
-                  <Field
-                    name="email"
-                    placeholder="Ingrese su email"
-                    type="email"
-                    className={
-                      formik.touched.email && formik.errors.email
-                        ? "form-control is-invalid"
-                        : "form-control"
-                    }
-                  />
-                  {formik.touched.email && formik.errors.email ? (
-                    <div className="invalid-feedback">
-                      {formik.errors.email}
-                    </div>
-                  ) : null}
+              </div>
+          
+              <div className={style.rightColumn}>
+                <div className={style.formGroup}>
+                  <div className={style.inputContainer}>
+                    <Field
+                      name="lname"
+                      placeholder="Apellido"
+                      className={`${style.input} ${
+                        touched.lname && errors.lname ? style.inputError : ""
+                      }`}
+                    />
+                    {touched.lname && errors.lname && (
+                      <span className={style.tooltip}>{errors.lname}</span>
+                    )}
+                  </div>
                 </div>
-
-                <div className="form-group">
-                  <label className={style.formField} htmlFor="password">
-                    Contraseña
-                  </label>
-                  <Field
-                    name="password"
-                    placeholder="Al menos: 8 caracteres, 1 mayúscula, 1 minúscula y 1 número"
-                    type={inputType}
-                    className={
-                      formik.touched.password && formik.errors.password
-                        ? "form-control is-invalid"
-                        : "form-control"
-                    }
-                  />
-                  <span className="password-toogle-icon">ICON {icon}</span>
-                  {formik.touched.password && formik.errors.password ? (
-                    <div className="invalid-feedback">
-                      {formik.errors.password}
-                    </div>
-                  ) : null}
+                <div className={style.formGroup}>
+                  <div className={style.inputContainer}>
+                    <Field
+                      name="studentNumber"
+                      placeholder="Número de Alumno"
+                      type="number"
+                      className={`${style.input} ${
+                        touched.studentNumber && errors.studentNumber
+                          ? style.inputError
+                          : ""
+                      }`}
+                    />
+                    {touched.studentNumber && errors.studentNumber && (
+                      <span className={style.tooltip}>{errors.studentNumber}</span>
+                    )}
+                  </div>
                 </div>
-
-                <div className="form-group">
-                  <label className={style.formField} htmlFor="rePassword">
-                    Repetir contraseña
-                  </label>
-                  <Field
-                    name="rePassword"
-                    placeholder="Repetir contraseña"
-                    type="password"
-                    className={
-                      formik.touched.rePassword && formik.errors.rePassword
-                        ? "form-control is-invalid"
-                        : "form-control"
-                    }
-                  />
-                  {formik.touched.rePassword && formik.errors.rePassword ? (
-                    <div className="invalid-feedback">
-                      {formik.errors.rePassword}
-                    </div>
-                  ) : null}
+                <div className={style.formGroup}>
+                  <div className={style.inputContainer}>
+                    <Field
+                      name="career"
+                      placeholder="Carrera universitaria"
+                      className={`${style.input} ${
+                        touched.career && errors.career ? style.inputError : ""
+                      }`}
+                    />
+                    {touched.career && errors.career && (
+                      <span className={style.tooltip}>{errors.career}</span>
+                    )}
+                  </div>
                 </div>
-
-                <div className={style.boton}>
-                  <Button variant="secondary" type="submit">
-                    Registrarme
-                  </Button>
-                </div>
-              </Form>
-              <div className={style.unregistred}>
-                <p className={style.p}>Ya tengo una cuenta</p>
-                <Link to="/login">Ir a login</Link>
               </div>
             </div>
-          </div>
-        )}
-      </Formik>
+          
+            <div className={`${style.formGroup} ${style.fullWidth}`}>
+              <div className={style.inputContainer}>
+                <Field
+                  name="email"
+                  placeholder="Correo electrónico"
+                  className={`${style.input} ${
+                    touched.email && errors.email ? style.inputError : ""
+                  }`}
+                />
+                {touched.email && errors.email && (
+                  <span className={style.tooltip}>{errors.email}</span>
+                )}
+              </div>
+            </div>
+          
+            <div className={style.formGrid}>
+              <div className={style.formGroup}>
+                <div className={style.inputContainer}>
+                  <Field
+                    name="password"
+                    placeholder="Contraseña"
+                    type={inputType}
+                    className={`${style.input} ${
+                      touched.password && errors.password ? style.inputError : ""
+                    }`}
+                  />
+                  {touched.password && errors.password && (
+                    <span className={style.tooltip}>{errors.password}</span>
+                  )}
+                </div>
+              </div>
+              <div className={style.formGroup}>
+                <div className={style.inputContainer}>
+                  <Field
+                    name="rePassword"
+                    placeholder="Confirmar contraseña"
+                    type="password"
+                    className={`${style.input} ${
+                      touched.rePassword && errors.rePassword ? style.inputError : ""
+                    }`}
+                  />
+                  {touched.rePassword && errors.rePassword && (
+                    <span className={style.tooltip}>{errors.rePassword}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          
+            <div className={style.formGroup}>
+              <div className={style.inputContainer}>
+                <Field
+                  name="story"
+                  placeholder="Contanos tu historia"
+                  as="textarea"
+                  rows="4"
+                  className={`${style.input} ${
+                    touched.story && errors.story ? style.inputError : ""
+                  }`}
+                />
+                {touched.story && errors.story && (
+                  <span className={style.tooltip}>{errors.story}</span>
+                )}
+              </div>
+            </div>
+            <button type="submit" className={style.submitButton}>
+              Registrarme
+            </button>
+            <div className={style.links}>
+              <p>
+                Ya tengo una cuenta <Link to="/login">Login</Link>
+              </p>
+            </div>
+          </Form>
+          )}
+        </Formik>
+      </div>
     </div>
   );
 }

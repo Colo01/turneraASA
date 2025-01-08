@@ -1,5 +1,3 @@
-// api/index.js
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -14,8 +12,16 @@ require("dotenv").config();
 
 const app = express(); // Inicializar express
 
+// Configuración específica para CORS
+const corsOptions = {
+  origin: "http://localhost:3000", // URL del frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true, // Permitir cookies si son necesarias
+};
+
+app.use(cors(corsOptions)); // Usa estas opciones para habilitar CORS
+
 // Configuración del middleware
-app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(morgan("tiny"));

@@ -1,11 +1,13 @@
 /* General styling for the main app */
 .appContainer {
-  background-image: url(../../public/fondo.jpg);
+  background-image: url(../../public/background-trigo.webp);
+  background-size: cover;
+  background-position: center;
+  height: 90vh;
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #f5f5f5; /* Neutral background */
-  font-family: "Arial", sans-serif;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .header {

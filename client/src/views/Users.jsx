@@ -45,22 +45,13 @@ const Users = () => {
             lname: capitalize(user.lname),
             fname: capitalize(user.fname),
             dni: user.dni,
+            email: user.email,
+            studentNumber: user.studentNumber,
             role: user.admin ? "AD" : user.operator ? "OP" : "CL",
             actions: user.admin ? (
               <></>
             ) : (
               <>
-                <Badge
-                  bg="secondary"
-                  role="button"
-                  data-bs-toggle="tooltip"
-                  title="Cambiar rol"
-                  onClick={() =>
-                    handleRoleChange(user._id, user.admin, user.operator)
-                  }
-                >
-                  <i className="bi bi-toggles"></i>
-                </Badge>
                 &nbsp;&nbsp;
                 <Badge
                   bg="secondary"
@@ -79,33 +70,6 @@ const Users = () => {
         setUsers(usersConstructor);
       })
       .catch((err) => console.log(err));
-  };
-
-  const handleRoleChange = (id, isAdmin, isOperator) => {
-    Confirm.show(
-      "miTurno",
-      "¿Confirma que desea cambiar el rol del usuario?",
-      "Si",
-      "No",
-      () => {
-        console.log(id, isAdmin, isOperator);
-        if (isAdmin) console.log("No se puede cambiar rol de un administrador");
-        else
-          axios
-            .put(
-              `http://localhost:5000/api/users/admin/${payload.id}/role/${id}`,
-              {
-                operator: !isOperator,
-              }
-            )
-            .then((res) => {
-              console.log(res);
-              setLoad(!load);
-              console.log(selectedUser._id, selectedUser.operator);
-            })
-            .catch((err) => console.log(err));
-      }
-    );
   };
 
   const handleDelete = (id) => {
@@ -227,6 +191,18 @@ const Users = () => {
       filter: textFilter(),
     },
     {
+      dataField: "email",
+      text: "Correo Electronico",
+      headerAlign: "center",
+      filter: textFilter(),
+    },
+    {
+      dataField: "studentNumber",
+      text: "Nro Alumno",
+      headerAlign: "center",
+      filter: textFilter(),
+    },
+    {
       dataField: "dni",
       text: "DNI",
       headerStyle: (column, colIndex) => {
@@ -276,13 +252,6 @@ const Users = () => {
     <>
       <CustomNavbar />
       <div className={style.mainContainer}>
-        <div className={style.sideContainer}>
-          <UserDetails
-            user={selectedUser}
-            handleDelete={handleDelete}
-            handleRoleChange={handleRoleChange}
-          />
-        </div>
         <div className={style.contentContainer}>
           <div className={style.tableContainer}>
             <BootstrapTable

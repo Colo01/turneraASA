@@ -1,0 +1,100 @@
+/* Fondo general */
+.mainContainer {
+    background-image: url(../../public/background-trigo-dark.webp);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Capa de desenfoque */
+.blurOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Caja del formulario */
+.loginBox {
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Logo */
+.logoContainer {
+    margin-bottom: 1rem;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+/* Inputs */
+.input {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+    font-size: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    transition: border-bottom-color 0.3s;
+}
+
+.input:focus {
+    outline: none;
+    border-bottom-color: #4a1c07;
+}
+
+/* Botón de ingreso */
+.submitButton {
+    background-color: #4a1c07 !important; /* Forzamos el color */
+    border-color: #4a1c07;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.submitButton:hover {
+    background-color: #ba902c!important;
+}
+
+.submitButton:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(74, 28, 7, 0.5);
+}
+/* Enlaces */
+.links {
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.links a {
+    color: #4a1c07;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.links a:hover {
+    color: #ba902c; /* Ajustamos el hover al color deseado */
+}

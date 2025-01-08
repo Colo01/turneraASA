@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { userLogin } from "../features/user";
-import style from "../styles/General.module.css";
+import style from "../styles/Login.module.css"; // Nueva hoja de estilos
 import parseJwt from "../hooks/parseJwt";
 import { Report } from "notiflix/build/notiflix-report-aio";
 
@@ -24,7 +24,6 @@ function Login() {
       })
     )
       .then((user) => {
-        // Validar y guardar el usuario en localStorage
         const token = JSON.parse(localStorage.getItem("user")).data.token;
         const payload = parseJwt(token);
 
@@ -43,7 +42,7 @@ function Login() {
           JSON.stringify({
             data: {
               token,
-              id: payload.id, // Asegúrate de guardar el ID aquí
+              id: payload.id,
             },
           })
         );
@@ -54,7 +53,7 @@ function Login() {
           ? navigate("/turnos_operator")
           : navigate("/welcome");
       })
-      .catch((err) => {
+      .catch(() => {
         Report.failure(
           "Error en login",
           "Por favor, verifique su email y password.",
@@ -65,56 +64,50 @@ function Login() {
 
   return (
     <div className={style.mainContainer}>
-      <div className={style.logoContainer}>
-        <img
-          className={style.smallLogo}
-          src={require("../images/2.png")}
-          alt="miTurno"
-        />
-      </div>
-      <div className={style.contentContainer}>
-        <div>
-          <h2>Login</h2>
-
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                placeholder="Ingrese su email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Contraseña</Form.Label>
-              <Form.Control
-                placeholder="Ingrese su contraseña"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            <div className={style.boton}>
-              <Button variant="secondary" type="submit">
-                Ingresar
-              </Button>
-            </div>
-
-            <Link className={style.link} to="/assist_password">
-              Olvidé mi contraseña
-            </Link>
-
-            <div className={style.unregistred}>
-              <p className={style.p}>Aún no tengo una cuenta</p>
-              <Link to="/register">Registrarme</Link>
-            </div>
-          </Form>
+      <div className={style.blurOverlay}></div>
+      <div className={style.loginBox}>
+        <div className={style.logoContainer}>
+          <img
+            className={style.logo}
+            src={require("../images/usuario.png")}
+            alt="miTurno"
+          />
         </div>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formEmail">
+            <Form.Control
+              className={style.input}
+              placeholder="Correo Electrónico"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Control
+              className={style.input}
+              placeholder="Contraseña"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <button type="submit" className={style.submitButton}>
+                Ingresar
+              </button>
+
+          <div className={style.links}>
+            <Link to="/assist_password">Olvidé mi contraseña</Link>
+            <p>
+              Aún no tengo una cuenta <Link to="/register">Registrarme</Link>
+            </p>
+          </div>
+          
+        </Form>
       </div>
     </div>
   );

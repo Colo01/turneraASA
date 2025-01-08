@@ -3,15 +3,17 @@
 import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const userRegister = createAsyncThunk("USER_REGISTER", (data) => {
-    console.log(data)
-    return axios.post("http://localhost:5000/api/user/register", data) // chequear ruta
-        .then(user => {
-            localStorage.setItem('registered', JSON.stringify(user.data))
-            return user.data
-        })
-        .catch(err => console.log(err))
-});
+export const userRegister = createAsyncThunk("USER_REGISTER", async (data) => {
+    console.log("Intentando enviar datos al backend:", data); // Log datos enviados
+    try {
+      const response = await axios.post("http://localhost:5000/api/user/register", data);
+      console.log("Respuesta del servidor:", response.data); // Log respuesta exitosa
+      return response.data;
+    } catch (error) {
+      console.error("Error al intentar registrar:", error.response?.data || error.message); // Log del error
+      throw error; // Propaga el error para que Formik o Redux lo manejen
+    }
+  });
 
 export const userLogin = createAsyncThunk("USER_LOGIN", (data) => {
     console.log(data)

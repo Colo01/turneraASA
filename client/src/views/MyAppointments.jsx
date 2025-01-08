@@ -54,6 +54,9 @@ const MyAppointments = () => {
       <div className={style.mainContainer}>
         <div className={style.contentContainer}>
           <div className={style.tableContainer}>
+          <h2 style={{ textAlign: "center", color: "#4a1c07" }}>
+              Turnos en los que participe
+            </h2>
             {loading ? (
               <p style={{ textAlign: "center", color: "#fff" }}>Cargando turnos...</p>
             ) : (

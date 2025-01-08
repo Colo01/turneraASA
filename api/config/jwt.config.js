@@ -1,3 +1,5 @@
+// api/config/jwt.config.js
+
 const jwt = require('jsonwebtoken');
 
 const getToken = (payload) => {

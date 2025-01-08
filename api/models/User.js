@@ -37,6 +37,24 @@ const userSchema = new Schema(
       minlength: 4,
       maxlength: 255,
     },
+    studentNumber: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 99999, // Validación para máximo de 5 cifras
+    },
+    address: {
+      type: String,
+      required: true,
+      lowercase: true,
+      minlength: 8,
+      maxlength: 255,
+    },
+    career: {
+      type: String,
+      required: true,
+      maxlength: 40, // Limitar el campo a 40 caracteres
+    },
     admin: {
       type: Boolean,
       required: false,
@@ -60,31 +78,26 @@ const userSchema = new Schema(
       minlength: 8,
       maxlength: 12,
     },
-    address: {
-      type: String,
-      require: false,
-      lowercase: true,
-      minlength: 8,
-      maxlength: 255,
-    },
-    resetLink: {type: String, default: ""},//guarda el token de recupero de contraseña
-    branchOffice: [{
-      type: Schema.Types.ObjectId,
-      ref: "BranchOffice",
-    }],
+    resetLink: { type: String, default: "" }, // Guarda el token de recupero de contraseña
+    branchOffice: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "BranchOffice",
+      },
+    ],
     appointment: [
       {
         type: Schema.Types.ObjectId,
         ref: "Appointment",
       },
     ],
-},
+    story: {
+      type: String,
+      default: null, // Permite que sea opcional
+      maxlength: 500, // Máximo de caracteres permitido
+    },
+  },
   { timestamps: true }
 );
 
 module.exports = model("User", userSchema);
-
-var today = new Date();
-var dd = String(today.getDate()).padStart(2, "0");
-var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-var yyyy = today.getFullYear();

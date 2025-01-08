@@ -1,32 +1,93 @@
-.mainContainer {
-  background-image: url(../../public/fondo.jpg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+/* Body */
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
-.contentContainer {
+/* Contenedor principal */
+.mainContainer {
+  background-image: url(../../public/background-trigo.webp);
+  background-size: cover;
+  background-position: center;
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  justify-content: center;
+  align-items: center; /* Centramos verticalmente */
+  height: 90vh;/* 100% del viewport menos la navbar */
+  overflow: hidden; /* Oculta cualquier desbordamiento */
+  padding: 0; /* Elimina cualquier padding extra */
+}
+
+/* Caja de bienvenida */
+.welcomeBox {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 90%; /* Hace que sea responsivo */
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin: 0 auto; /* Centra horizontalmente */
+}
+
+/* Título */
+.welcomeTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #4b2c20;
+  margin-bottom: 1rem;
+}
+
+/* Texto */
+.welcomeText {
+  font-size: 1.1rem;
+  color: #4b2c20;
+  line-height: 1.6;
+  margin-bottom: 2rem;
   text-align: center;
 }
 
+/* Botones */
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .button {
-  display: inline-block;
-  padding: 15px 30px;
+  display: block;
+  padding: 0.8rem;
   font-size: 1.2rem;
   font-weight: bold;
   color: #fff;
-  background-color: #4b2c20;
-  border: 2px solid #804d3d;
-  border-radius: 8px;
+  background-color: #4a1c07;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
   text-decoration: none;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%; /* Ocupa todo el ancho */
 }
 
 .button:hover {
-  background-color: #804d3d;
-  border-color: #4b2c20;
+  background-color: #ba902c;
+  box-shadow: 0 0 5px rgba(186, 144, 44, 0.5);
+}
+
+.button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(74, 28, 7, 0.5);
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .welcomeBox {
+    padding: 1.5rem;
+  }
+
+  .welcomeText {
+    font-size: 0.9rem;
+  }
 }
