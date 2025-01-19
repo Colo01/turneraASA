@@ -84,3 +84,40 @@
     max-width: 120px;
   }
 }
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .flex-center {
+    flex-direction: column; /* Cambiar a apilado en pantallas pequeñas */
+  }
+
+  .mt-2 {
+    margin-top: 1.5rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 1.5rem;
+  }
+}

@@ -3,11 +3,11 @@
   background-image: url(../../public/background-trigo.webp);
   background-size: cover;
   background-position: center;
-  height: 90vh;
+  min-height: 100vh; /* Permite que el contenido crezca verticalmente */
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  flex-direction: column; /* Contenido apilado */
+  padding: 1rem;
+  overflow-y: auto; /* Scroll vertical */
 }
 
 .header {

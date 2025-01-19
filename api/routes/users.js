@@ -16,28 +16,43 @@ const parseId = require("../utils/functions");
 */
 
 // (1) Usuario - Modifica sus datos personales.
-router.put("/me/:id", (req, res) => {
+router.put("/me/:id", async (req, res) => {
   const { id } = req.params;
-  const { fname, lname, dni, email, operator, address, phone, birthdate } =
-    req.body;
 
-  User.updateOne(
-    { _id: parseId(id) },
-    { fname, lname, dni, email, operator, address, phone, birthdate },
-    (err, docs) => {
-      res.send({
-        items: docs,
-      });
+  try {
+    // Actualizar usuario con validaciones activadas
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: req.body }, // Solo actualizar los campos enviados
+      { new: true, runValidators: true } // Devuelve el documento actualizado y aplica validaciones
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
-  );
+
+    res.json({ success: true, data: updatedUser });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      // Manejo de errores de validación
+      return res.status(400).json({ error: error.message });
+    }
+
+    console.error("Error al actualizar el usuario:", error);
+    res.status(500).json({ error: "Error al actualizar el usuario" });
+  }
 });
 
-// (2) Usuario - Muestra sus datos personales.
+// (2) Usuario - Muestra sus datos personales
 router.get("/me/:id", (req, res) => {
   const { id } = req.params;
 
   User.findOne({ _id: id }, (err, result) => {
-    res.send(result);
+    if (err) return res.status(500).json({ error: "Error del servidor" });
+    if (!result)
+      return res.status(404).json({ error: "Usuario no encontrado" });
+
+    res.json(result); // Asegúrate de que todos los campos se envían aquí
   });
 });
 

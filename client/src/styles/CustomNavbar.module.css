@@ -6,9 +6,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 1.5rem;
-  height: 100px; /* Ajusta la altura */
+  height: 70px; /* Reducimos la altura */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 10;
 }
 
 /* Sección izquierda (Logo y saludo) */
@@ -20,8 +19,7 @@
 
 /* Estilo del logo */
 .logo {
-  height: 60px;
-  width: auto;
+  height: 50px;
 }
 
 /* Texto estático "Hola [usuario]" */
@@ -34,7 +32,7 @@
 /* Menú de navegación */
 .menu {
   display: flex;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .menuItem {
@@ -53,7 +51,7 @@
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
   .navbar {
-    height: 70px;
+    height: 60px;
     padding: 0 1rem;
   }
 
@@ -62,7 +60,7 @@
   }
 
   .menu {
-    gap: 1rem;
+    gap: 0.8rem;
   }
 
   .menuItem {

@@ -6,6 +6,8 @@ body {
   background-color: #f5f5f5;
   color: #333333;
   line-height: 1.6;
+  min-height: 100vh; /* Aseguramos que el contenido ocupe toda la pantalla */
+  overflow-x: hidden; /* Evita scroll horizontal innecesario */
 }
 
 a {
@@ -73,14 +75,6 @@ h6 {
 /* Global responsiveness */
 @media (max-width: 768px) {
   body {
-    font-size: 0.9rem;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  h2 {
-    font-size: 1.5rem;
+    font-size: 0.9rem; /* Ajusta el tamaño de fuente */
   }
 }
