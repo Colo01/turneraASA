@@ -73,10 +73,14 @@ const userSchema = new Schema(
       maxlength: 25,
     },
     birthdate: {
-      type: String,
-      required: false,
-      minlength: 8,
-      maxlength: 12,
+      type: Date,
+      required: true,
+      validate: {
+        validator: function (value) {
+          return value <= new Date();
+        },
+        message: "La fecha de nacimiento no puede ser futura.",
+      },
     },
     resetLink: { type: String, default: "" }, // Guarda el token de recupero de contraseña
     branchOffice: [

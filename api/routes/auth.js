@@ -13,13 +13,21 @@ const Joi = require("@hapi/joi");
 const schemaRegister = Joi.object({
   fname: Joi.string().min(3).max(255).required(),
   lname: Joi.string().min(2).max(255).required(),
-  dni: Joi.number().integer().required(),
+  dni: Joi.number()
+    .integer()
+    .min(1000000) // Mínimo 7 dígitos (1 millón)
+    .max(99999999) // Máximo 8 dígitos (99 millones)
+    .required(),
   email: Joi.string().min(6).max(255).required().email(),
   password: Joi.string().min(8).max(1024).required(),
   studentNumber: Joi.number().integer().min(1).max(99999).required(),
   address: Joi.string().min(8).max(255).required(),
   career: Joi.string().max(40).required(),
   story: Joi.string().optional(), // No se guarda en la base de datos
+  birthdate: Joi.date()
+    .max("now") // No permitir fechas futuras
+    .min(new Date(new Date().setFullYear(new Date().getFullYear() - 100))) // No permitir más de 100 años atrás
+    .required(), // Fecha de nacimiento
 });
 
 const schemaLogin = Joi.object({
@@ -78,7 +86,9 @@ router.post("/register", async (req, res) => {
   const existeEmail = await User.findOne({ email: req.body.email });
   if (existeEmail) {
     console.warn("Email ya registrado:", req.body.email); // Log si el email ya existe
-    return res.status(400).json({ error: true, mensaje: "Email ya registrado" });
+    return res
+      .status(400)
+      .json({ error: true, mensaje: "Email ya registrado" });
   }
 
   const existeDni = await User.findOne({ dni: req.body.dni });
@@ -100,6 +110,7 @@ router.post("/register", async (req, res) => {
     studentNumber: req.body.studentNumber,
     address: req.body.address,
     career: req.body.career,
+    birthdate: req.body.birthdate,
   });
 
   try {
@@ -116,6 +127,5 @@ router.post("/register", async (req, res) => {
     res.status(400).json(error);
   }
 });
-
 
 module.exports = router;
