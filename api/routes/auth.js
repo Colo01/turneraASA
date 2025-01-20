@@ -4,6 +4,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Joi = require("@hapi/joi");
+const { sendRegistrationEmail } = require("../utils/send_email_service"); // Importar el servicio de envío de correos
 
 /*
 (1) Usuario - Login.
@@ -116,6 +117,10 @@ router.post("/register", async (req, res) => {
   try {
     const userDB = await user.save();
     console.log("Usuario registrado exitosamente:", userDB); // Log usuario registrado
+
+    // Enviar correo de confirmación de registro
+    await sendRegistrationEmail(userDB.email, userDB.fname);
+
     res.json({
       success: true,
       msg: "Registrado correctamente",

@@ -73,7 +73,7 @@ const Calendar = () => {
   const handleReserve = async (appointmentId) => {
     const user = JSON.parse(localStorage.getItem("user"));
     const userId = user?.data?.id;
-  
+
     if (!userId || !appointmentId) {
       Report.failure(
         "Error",
@@ -82,7 +82,7 @@ const Calendar = () => {
       );
       return;
     }
-  
+
     // Confirmación antes de reservar el turno
     Confirm.show(
       "Confirmar Reserva",
@@ -96,14 +96,15 @@ const Calendar = () => {
             { userId, appointmentId },
             { headers: { Authorization: `Bearer ${user.data.token}` } }
           );
-  
+
           Report.success(
             "Reserva Exitosa",
+            "Recibiras un mail con los datos del turno",
             response.data.message,
             "Ir a Mis Turnos",
             () => navigate("/myappointments")
           );
-  
+
           // Actualizar lista de turnos disponibles
           if (selectedOffice) loadAppointments(selectedOffice._id);
         } catch (error) {
@@ -115,8 +116,6 @@ const Calendar = () => {
       }
     );
   };
-  
-  
 
   const officeOptions = offices.map((office) => (
     <option key={office._id} value={office._id}>
@@ -184,7 +183,7 @@ const Calendar = () => {
         </div>
       </div>
     </>
-  );  
+  );
 };
 
 export default Calendar;

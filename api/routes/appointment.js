@@ -23,7 +23,9 @@ router.get("/availableAppointments", async (req, res) => {
   const { deliveryPointId } = req.query;
 
   if (!deliveryPointId) {
-    return res.status(400).json({ error: "ID del punto de entrega requerido." });
+    return res
+      .status(400)
+      .json({ error: "ID del punto de entrega requerido." });
   }
 
   try {
@@ -40,6 +42,8 @@ router.get("/availableAppointments", async (req, res) => {
 });
 
 // (2) Reservar un turno por el usuario
+const { sendAppointmentEmail } = require("../utils/send_email_service"); // Importar el servicio de envío de correos
+
 router.post("/reserve", async (req, res) => {
   const { userId, appointmentId } = req.body;
 
@@ -64,7 +68,9 @@ router.post("/reserve", async (req, res) => {
     // Validar si el usuario ya tiene un turno reservado para esta sucursal
     const user = await User.findById(userId).populate("appointment");
     const hasTurnForThisBranch = user.appointment.some(
-      (appt) => appt.deliveryPoint.toString() === appointment.deliveryPoint._id.toString()
+      (appt) =>
+        appt.deliveryPoint.toString() ===
+        appointment.deliveryPoint._id.toString()
     );
 
     if (hasTurnForThisBranch) {
@@ -82,13 +88,21 @@ router.post("/reserve", async (req, res) => {
     user.appointment.push(appointmentId);
     await user.save();
 
+    // Enviar correo de confirmación de turno
+    await sendAppointmentEmail(user.email, {
+      id: appointment._id,
+      date: appointment.date,
+      time: appointment.time,
+      state: appointment.state,
+      branch: appointment.deliveryPoint.address,
+    });
+
     res.status(200).json({ message: "Turno reservado exitosamente." });
   } catch (err) {
     console.error("Error al reservar turno:", err);
     res.status(500).json({ error: "Error interno del servidor." });
   }
 });
-
 
 // (3) Mostrar turnos de un usuario
 router.get("/:id/showAppointments", async (req, res) => {
@@ -101,7 +115,9 @@ router.get("/:id/showAppointments", async (req, res) => {
     );
 
     if (!appointments.length) {
-      return res.status(404).json({ message: "No hay turnos registrados para este usuario." });
+      return res
+        .status(404)
+        .json({ message: "No hay turnos registrados para este usuario." });
     }
 
     res.status(200).json({ data: appointments });
@@ -111,7 +127,6 @@ router.get("/:id/showAppointments", async (req, res) => {
   }
 });
 
-
 // (4) Mostrar turnos de un usuario
 router.get("/myAppointments", async (req, res) => {
   const { userId } = req.query; // Usa query params para obtener el ID del usuario
@@ -120,9 +135,14 @@ router.get("/myAppointments", async (req, res) => {
   }
 
   try {
-    const appointments = await Appointment.find({ user: userId }).populate("deliveryPoint", "location address");
+    const appointments = await Appointment.find({ user: userId }).populate(
+      "deliveryPoint",
+      "location address"
+    );
     if (!appointments.length) {
-      return res.status(404).json({ message: "No hay turnos registrados para este usuario." });
+      return res
+        .status(404)
+        .json({ message: "No hay turnos registrados para este usuario." });
     }
 
     res.status(200).json({ data: appointments });
@@ -130,8 +150,6 @@ router.get("/myAppointments", async (req, res) => {
     console.error("Error al obtener los turnos:", error.message);
     res.status(500).json({ error: "Error interno del servidor." });
   }
-
 });
-
 
 module.exports = router;
