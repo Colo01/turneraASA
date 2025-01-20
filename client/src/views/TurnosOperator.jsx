@@ -25,7 +25,9 @@ const TurnosOperator = () => {
         );
         setAppointments(response.data.data);
       } catch (error) {
-        setError(error.response?.data?.message || "Error al obtener los turnos");
+        setError(
+          error.response?.data?.message || "Error al obtener los turnos"
+        );
       }
     };
 
@@ -66,6 +68,12 @@ const TurnosOperator = () => {
   };
 
   const columns = [
+    {
+      dataField: "_id",
+      text: "ID",
+      sort: true,
+      filter: textFilter(),
+    },
     {
       dataField: "user.fname",
       text: "Nombre",
