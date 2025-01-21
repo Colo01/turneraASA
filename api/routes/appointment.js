@@ -90,7 +90,7 @@ router.post("/reserve", async (req, res) => {
 
     // Enviar correo de confirmación de turno
     await sendAppointmentEmail(user.email, {
-      id: appointment._id,
+      id: appointment._id.toString(), /// lo convertimos en string  que el mail, que sea una cadena para editarlo
       date: appointment.date,
       time: appointment.time,
       state: appointment.state,

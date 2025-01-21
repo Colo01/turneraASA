@@ -70,21 +70,24 @@ const TurnosOperator = () => {
   const columns = [
     {
       dataField: "_id",
-      text: "ID",
+      text: "Codigo de Turno",
       sort: true,
       filter: textFilter(),
+      formatter: (cell) => cell.slice(-4), // mostrar solo los 4 digitos del ID para busquedas de turno.
     },
     {
       dataField: "user.fname",
       text: "Nombre",
       sort: true,
       filter: textFilter(),
+      formatter: (cell) => (cell ? cell : "USUARIO ELIMINADO"), // mostrar "Usuario Eliminado" si el usuario fue eliminado
     },
     {
       dataField: "user.dni",
       text: "DNI",
       sort: true,
       filter: textFilter(),
+      formatter: (cell) => (cell ? cell : "USUARIO ELIMINADO"), // mostrar "Usuario Eliminado" si el usuario fue eliminado
     },
     {
       dataField: "date",

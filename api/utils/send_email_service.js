@@ -36,29 +36,33 @@ const sendRegistrationEmail = async (toEmail, userName) => {
 // Función para enviar correo de confirmación de turno
 const sendAppointmentEmail = async (toEmail, appointmentDetails) => {
   try {
+    console.log("Detalles de la cita para el correo:", appointmentDetails); // Debug
+
+    const shortId = appointmentDetails.id.slice(-4); // ahora este string deberia andar perri
+
     const mailOptions = {
-      from: "tu_correo@gmail.com", // Correo del remitente
-      to: toEmail, // Correo del destinatario
-      subject: "Confirmación de Turno", // Asunto del correo
+      from: "ptester1011@gmail.com",
+      to: toEmail,
+      subject: "Confirmación de Turno",
       html: `
-        <h1>¡Confirmación de Turno!</h1>
+        <h1>¡Confirmación de Turno en ASA!</h1>
         <p>Tu turno ha sido reservado con éxito. Aquí están los detalles:</p>
         <ul>
-          <li><strong>ID:</strong> ${appointmentDetails.id}</li>
+          <li><strong>ID:</strong> ${shortId}</li>
           <li><strong>Fecha:</strong> ${appointmentDetails.date}</li>
           <li><strong>Hora:</strong> ${appointmentDetails.time}</li>
           <li><strong>Estado:</strong> ${appointmentDetails.state}</li>
           <li><strong>Sucursal:</strong> ${appointmentDetails.branch}</li>
         </ul>
         <p>Por favor, asegúrate de presentarte a tiempo.</p>
-      `, // Cuerpo del correo
+      `,
     };
 
-    await transporter.sendMail(mailOptions); // Enviar el correo
-    console.log("Correo de confirmación de turno enviado exitosamente.");
+    await transporter.sendMail(mailOptions);
+    console.log("Correo enviado exitosamente.");
   } catch (error) {
-    console.error("Error al enviar el correo de confirmación de turno:", error);
-    throw error; // Propagar el error para manejarlo en el llamado
+    console.error("Error al enviar correo:", error);
+    throw error;
   }
 };
 
