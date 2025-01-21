@@ -105,18 +105,22 @@ const MyAccount = () => {
     Confirm.show(
       "miTurno",
       "¿Confirma que desea eliminar su cuenta?",
-      "Si",
+      "Sí",
       "No",
-      () => {
-        axios
-          .delete(
-            `http://localhost:5000/api/users/admin/62c71168c261b4d23d5b93a5/delete/${payload.id}`
-          )
-          .then((res) => {
-            localStorage.removeItem("user");
-            navigate("/");
-          })
-          .catch((err) => console.log(err));
+      async () => {
+        try {
+          const response = await axios.delete(
+            `http://localhost:5000/api/users/me/${payload.id}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          console.log(response.data.message); // Log para confirmar eliminación
+          localStorage.removeItem("user"); // Eliminar token del almacenamiento local
+          navigate("/login"); // Redirigir al login
+        } catch (err) {
+          console.error("Error al eliminar la cuenta:", err);
+        }
       }
     );
   };

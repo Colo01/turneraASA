@@ -13,6 +13,7 @@ const parseId = require("../utils/functions");
 (4) Administrador - Muestra todos los usuarios.
 (5) Administrador - Elimina usuarios.
 (6) Administrador - Cambia el rol de usuario a operador.
+(7) Usuario - Elimina su propia cuenta.
 */
 
 // (1) Usuario - Modifica sus datos personales.
@@ -120,6 +121,24 @@ router.put("/admin/:adminId/role/:id", async (req, res) => {
     }
   } catch (error) {
     res.status(404).json(error);
+  }
+});
+
+// (7) Usuario - Elimina su propia cuenta.
+router.delete("/me/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.status(200).json({ message: "Usuario eliminado correctamente" });
+  } catch (error) {
+    console.error("Error al eliminar el usuario:", error);
+    res.status(500).json({ error: "Error al eliminar el usuario" });
   }
 });
 
