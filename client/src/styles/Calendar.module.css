@@ -1,25 +1,27 @@
 /* Styles specific to the Calendar view */
 .mainContainer {
   background-image: url(../../public/background-trigo.webp);
-  background-size: cover;
-  background-position: center;
-  height: 90vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .contentContainer {
-  margin: 0 auto;
-  max-width: 1600px;
+  margin-bottom: 5%;
+  width: 100%;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  padding: 1rem;
+  flex-direction: column;
 }
 
 .tableContainer {
+  max-height: 70vh; /* Limitar la altura */
+  overflow-y: auto; /* Scroll interno */
   margin-top: 1rem;
 }
 
@@ -54,15 +56,15 @@ h2 {
 }
 
 .bootstrap-table .btn-primary {
-  background-color: #5a2e26;
+  background-color: #ff7f50; /* Un color más destacable */
   border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
 .bootstrap-table .btn-primary:hover {
-  background-color: #5a2e26;
+  background-color: #ff5722; /* Feedback de hover */
 }
 
 /* Responsive adjustments */

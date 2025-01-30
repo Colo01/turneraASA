@@ -155,20 +155,20 @@ const Calendar = () => {
       <CustomNavbar />
       <div className={style.mainContainer}>
         <div className={style.contentContainer}>
+          <h2 style={{ textAlign: "center", color: "#4a1c07" }}>
+            Calendario de Turnos
+          </h2>
+          <select
+            className="form-select"
+            onChange={(e) =>
+              setSelectedOffice(offices.find((o) => o._id === e.target.value))
+            }
+            style={{ margin: "20px 0", padding: "10px" }}
+          >
+            <option value="">Selecciona una capaña de entrega</option>
+            {officeOptions}
+          </select>
           <div className={style.tableContainer}>
-            <h2 style={{ textAlign: "center", color: "#4a1c07" }}>
-              Calendario de Turnos
-            </h2>
-            <select
-              className="form-select"
-              onChange={(e) =>
-                setSelectedOffice(offices.find((o) => o._id === e.target.value))
-              }
-              style={{ margin: "20px 0", padding: "10px" }}
-            >
-              <option value="">Selecciona una capaña de entrega</option>
-              {officeOptions}
-            </select>
             <BootstrapTable
               keyField="id"
               data={appointments}
